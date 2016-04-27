@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <title>
-    rcf@0.1.0
-  </title>
+  <meta charset="UTF-8">
+  <title>examples/example-todolist.md</title>
   <link href="//os.alipayobjects.com/rmsportal/iUKcdtKUFtONTig.css" rel="stylesheet"/>
   <style type="text/css">
   @font-face {
@@ -601,6 +598,34 @@
     margin: 0;
   }
 
+  .highlight pre {
+    padding: .8em 1em;
+    font: 14px/20px Consolas, Monaco, 'Andale Mono', monospace;
+    border: 1px solid #e5e8ec;
+    border-radius: 3px;
+    background-size: 40px 40px;
+    background-origin: content-box;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .highlight pre > code {
+    font-family: inherit;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    vertical-align: 2px;
+    display: block;
+    -moz-tab-size: 2;
+    -o-tab-size: 2;
+    tab-size: 2;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
   /*
 
   github.com style (c) Vasily Polovnyov <vast@whiteants.net>
@@ -700,92 +725,184 @@
   .hljs-strong {
     font-weight: bold;
   }
-
-  .header {
-    min-width: 200px;
-    max-width: 790px;
-    margin:0 auto;
+  .wrapper {
+    width: 86%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
+  .example {
+    padding: 20px 0;
+  }
+
+  </style>
+  <style type="text/css">
   
   </style>
 </head>
-
 <body>
-  <div>
+  <div class="wrapper">
     <div class="header">
-      <h1>rcf@0.1.0</h1>
+      <h1>examples/example-todolist.md</h1>
     </div>
-    <div class="examples">
-      <h3>EXAMPLES</h3>
-      <div class="examples-body">
-        <ul>
-        
-          <li>
-            <a href="./examples/example-a.html">
-              examples/example-a
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-todolist.html">
-              examples/example-todolist
-            </a>
-          </li>
-        
-      </ul>
+    <div class="example">
+      <div class="example-dom" id="__exampleDom"></div>
+
+      
+      <div class="example-html">
+        <div id="react-content"></div>
+      </div>
+      
+
+      <div class="example-scripts">
+      
+        <script src="../common.js"></script>
+      
+        <script src="example-todolist.js"></script>
+      
       </div>
     </div>
-    <div id="readme" class="boxed-group">
-      <h3>README.md</h3>
+
+    
+    <div id="desc" class="boxed-group">
       <div class="markdown-body">
-      <h1 id="rcf">Rcf</h1>
-<h2 id="examples">Examples</h2>
-<p><a href="http://flutejs.github.io/rcf/">http://flutejs.github.io/rcf/</a></p>
-<h2 id="install">Install</h2>
-<div class="highlight"><pre><code language=cmake>npm <span class="hljs-keyword">install</span> rcf</code></pre></div><h2 id="usage">Usage</h2>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'rcf'</span>;
-<span class="hljs-keyword">const</span> context = {};
-ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Rcf</span> <span class="hljs-attr">context</span>=<span class="hljs-string">{context}</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">A</span> /&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">Rcf</span>&gt;</span>, mountDom);</span></code></pre></div><h2 id="api">API</h2>
-<h3 id="props">props</h3>
-<table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th style="width: 100px;">name</th>
-        <th style="width: 50px;">type</th>
-        <th>description</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>context</td>
-          <td>object</td>
-          <td>context object</td>
-        </tr>
-        <tr>
-          <td>tag</td>
-          <td>string | object</td>
-          <td>default: &#39;div&#39;</td>
-        </tr>
-        <tr>
-          <td>set</td>
-          <td>string</td>
-          <td>default: &#39;set&#39;</td>
-        </tr>
-    </tbody>
-</table>
+      <h2>code</h2>
+<div class="highlight"><pre><code language=html><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"react-content"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></div>
+<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> React, { Component, PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'index.js'</span>;
 
 
-<h2 id="test-case">Test Case</h2>
-<div class="highlight"><pre><code language=stata>npm <span class="hljs-keyword">run</span> <span class="hljs-keyword">test</span></code></pre></div><h2 id="license">License</h2>
-<p>Component is released under the MIT license.</p>
 
+<span class="hljs-comment">// TodoList.jsx</span>
+
+<span class="hljs-keyword">const</span> TodoList = (props, context) =&gt; 
+
+&lt;div&gt;
+  {
+    context.list.map(item =&gt; 
+      &lt;Rcf context={item}&gt;
+        &lt;Todo /&gt;
+      &lt;/Rcf&gt;
+    )
+  }
+  &lt;AddTodo /&gt;
+  &lt;Footer /&gt;
+&lt;/div&gt;
+
+TodoList.contextTypes = {
+  list: PropTypes.array,
+};
+
+
+
+// Todo.jsx
+
+const Todo = (props, context) =&gt; 
+
+&lt;div style={{
+  textDecoration: context.completed ? 'line-through' : 'none',
+  cursor:'pointer'
+  }} onClick={() =&gt; {
+    handleTodoClick(context);
+  }}&gt;
+
+  {context.text}
+
+&lt;/div&gt;
+
+Todo.contextTypes = {
+  set: PropTypes.func,
+  text: PropTypes.string,
+  completed: PropTypes.bool,
+};
+
+const handleTodoClick = (context) =&gt; {
+  context.set({
+    ...context,
+    completed: !context.completed,
+  });
+};
+
+
+
+// AddTodo.jsx
+
+const AddTodo = (props, context) =&gt; 
+
+&lt;form onSubmit={e =&gt; {
+  e.preventDefault();
+  const node = document.querySelector('input', e.target);
+  const text = node.value.trim()
+  if (!text){
+    return;
+  }
+  handleAddTodoSubmit(context, text);
+  node.value = '';
+  node.focus();
+}}&gt;
+  &lt;input type='text' /&gt;
+  &lt;button type="submit"&gt;
+    Add
+  &lt;/button&gt;
+&lt;/form&gt;
+
+AddTodo.contextTypes = {
+  set: PropTypes.func,
+  list: PropTypes.array,
+};
+
+const handleAddTodoSubmit = (context, text) =&gt; {
+  context.set({
+    list: [...context.list, {
+      text,
+      completed: false,
+    }],
+  });
+};
+
+
+
+// Footer.jsx
+
+const Footer = (props, context) =&gt; 
+
+&lt;div&gt;
+
+  all
+  active
+  completed
+
+&lt;/div&gt;
+
+Footer.contextTypes = {
+  list: PropTypes.array,
+};
+
+
+
+// App.jsx
+
+const context = {
+  list: [{
+    text:'todo1',
+    completed: true,
+  }],
+};
+
+const App = () =&gt; &lt;Rcf context={context}&gt;
+  &lt;TodoList /&gt;
+&lt;/Rcf&gt;
+
+ReactDOM.render(&lt;App /&gt;
+  ,
+document.getElementById('react-content'));</code></pre></div>
       </div>
     </div>
-    <a href="http://github.com/flutejs/rcf"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+    
+
+    
   </div>
 </body>
-
 </html>
