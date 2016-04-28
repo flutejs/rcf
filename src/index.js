@@ -1,106 +1,72 @@
-import React, { Component, PropTypes, Children } from 'react';
+import React, { Component, PropTypes, Children, cloneElement, isValidElement } from 'react';
 import assign from 'object-assign';
-import shallowequal from 'shallowequal';
-import { get, set, del } from './context';
+import { get, set, del } from './container';
 
 
 class Rcf extends Component {
 
   static defaultProps = {
-    set: 'set',
     tag: 'div',
+    set: 'set',
   };
 
   static propTypes = {
-    context: PropTypes.object.isRequired,
-    set: PropTypes.string,
     tag: PropTypes.any,
-  }
+    set: PropTypes.string,
+    store: PropTypes.object.isRequired,
+  };
 
   constructor(props) {
     super(props);
-    const list = get(props.context);
+    const list = get(props.store);
     if (list) {
-      list.push(this.set);
+      list.push(this.update);
     } else {
-      set(props.context, [this.set]);
-    }
-    const context = {
-      ...props.context,
-      [props.set]: this.update,
-    };
-    const childContextTypes = {};
-    for (let key in context) {
-      childContextTypes[key] = PropTypes.any;
-    }
-    class R extends Component {
-      static childContextTypes = childContextTypes;
-      getChildContext() {
-        return context;
-      }
-      render() {
-        const children = this.props.children;
-        const count = Children.count(children);
-        if (count < 2) {
-          return children || null;
-        }
-        return React.createElement(props.tag, null, children);  
-      }
-    }
-    this.state = {
-      container: {
-        context,
-      },
-      R,
-    };
-  }
-
-  set = obj => {
-    const container = this.state.container;
-    const context = container.context;
-    assign(context, obj);
-    this.setState({
-      container: {
-        context,
-      }
-    });
-  }
-
-  update = obj => {
-    const list = get(this.props.context)
-    if (list) {
-      list.forEach(item => {
-        item(obj);
-      });
+      set(props.store, [this.update]);
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!shallowequal(nextProps.context, this.props.context)) {
-      this.set(nextProps.context);
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.container !== this.state.container;
+  shouldComponentUpdate(nextProps) {
+    return false;
   }
 
   componentWillUnmount() {
-    const list = get(this.props.context);
+    const list = get(this.props.store);
     if (list) {
-      const array = list.filter(item => item !== this.set);
+      const array = list.filter(item => item !== this.update);
       if (array.length >=0 ) {
-        set(this.props.context, array);
+        set(this.props.store, array);
       } else {
-        del(this.props.context);
+        del(this.props.store);
       }
     }
   }
 
-  render() {
-    const R = this.state.R;
-    const children = this.props.children;
-    return <R>{children}</R>;
+  set = store => {
+    assign(this.props.store, store);
+    const list = get(this.props.store);
+    if (list) {
+      list.forEach(item => item());
+    }
+  }
+
+  update = () => {
+    this.forceUpdate();
+  }
+
+  render() {  
+    const array = Children.map(this.props.children, child => isValidElement(child) ? cloneElement(child, {
+      ...this.props.store,
+      [this.props.set]: this.set,
+    }) : child);
+    if (!array) {
+      return null;
+    }
+    if (array.length === 1) {
+      return array[0];
+    }
+    const R = this.props.tag;
+    return <R {...this.props}>{array}</R>; 
   }
 }
 
