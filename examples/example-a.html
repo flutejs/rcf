@@ -769,61 +769,50 @@
       <div class="markdown-body">
       <h2>code</h2>
 <div class="highlight"><pre><code language=html><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"react-content"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></div>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> React, { Component, PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'index.js'</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
-  <span class="hljs-keyword">static</span> contextTypes = {
-    a: PropTypes.any,
-    set: PropTypes.any,
-  }
-  onClick() {
-    <span class="hljs-keyword">this</span>.context.set({
-      a: <span class="hljs-keyword">this</span>.context.a - <span class="hljs-number">1</span>,
+<span class="hljs-keyword">const</span> A = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+
+  A:
+
+  {props.a} 
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> {
+    props.set({
+      a: props.a - 1,
     });
-  }
-  render() {
-    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      this.context.a: {this.context.a}
-      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{::this.onClick}</span>&gt;</span>A<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
-  }
-}
+  }}&gt;
+    click
+  <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 
-<span class="hljs-keyword">const</span> obj = {
-  a: <span class="hljs-number">1</span>
-};
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
-  <span class="hljs-keyword">constructor</span>(props) {
-    <span class="hljs-keyword">super</span>(props);
-    <span class="hljs-keyword">this</span>.state = {
-      a: <span class="hljs-number">1</span>
-    }
-  }
-  onClick() {
-    <span class="hljs-keyword">const</span> a = <span class="hljs-keyword">this</span>.state.a;
-    <span class="hljs-keyword">this</span>.setState({
-      a: a - <span class="hljs-number">1</span>,
-    });
-  }
-  render() {
-    <span class="hljs-keyword">return</span> &lt;div&gt;
-      &lt;Rcf context={obj}&gt;
-        &lt;A /&gt;
-      &lt;/Rcf&gt;
-      &lt;Rcf context={obj}&gt;
-        &lt;A /&gt;
-      &lt;/Rcf&gt;
-      this.state.a: {this.state.a}
-      &lt;button onClick={::this.onClick}&gt;App&lt;/button&gt;
-    &lt;/div&gt;;
-  }
-}
+<span class="hljs-keyword">const</span> B = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
 
-ReactDOM.render(&lt;App /&gt;
-  ,
+  B:
+
+  {props.a} 
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+
+<span class="hljs-keyword">const</span> store = {a: <span class="hljs-number">1</span>};
+
+ReactDOM.render(&lt;div&gt;
+
+  &lt;Rcf store={store}&gt;
+    &lt;A /&gt;
+    &lt;B /&gt;
+  &lt;/Rcf&gt;
+
+  &lt;Rcf store={store}&gt;
+    &lt;B /&gt;
+  &lt;/Rcf&gt;
+
+&lt;/div&gt;, 
+
 document.getElementById('react-content'));</code></pre></div>
       </div>
     </div>

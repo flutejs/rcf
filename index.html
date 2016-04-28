@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <title>
-    rcf@0.1.0
+    rcf@0.2.1
   </title>
   <link href="//os.alipayobjects.com/rmsportal/iUKcdtKUFtONTig.css" rel="stylesheet"/>
   <style type="text/css">
@@ -714,7 +714,7 @@
 <body>
   <div>
     <div class="header">
-      <h1>rcf@0.1.0</h1>
+      <h1>rcf@0.2.1</h1>
     </div>
     <div class="examples">
       <h3>EXAMPLES</h3>
@@ -727,12 +727,6 @@
             </a>
           </li>
         
-          <li>
-            <a href="./examples/example-todolist.html">
-              examples/example-todolist
-            </a>
-          </li>
-        
       </ul>
       </div>
     </div>
@@ -740,15 +734,55 @@
       <h3>README.md</h3>
       <div class="markdown-body">
       <h1 id="rcf">Rcf</h1>
+<p><a href="https://npmjs.org/package/rcf"><img src="https://img.shields.io/npm/v/rcf.svg?style=flat" alt="NPM version"></a></p>
+<p>Rcf is a react component, it uses a clear and simple way to manage your state: Do not use &quot;this.state&quot; and &quot;this.setState&quot;, just use store, which is a plain object.</p>
+<p>Put your component in Rcf and Rcf allows it to get store by &quot;this.props.*&quot; and set store by &quot;this.props.set&quot;.</p>
 <h2 id="examples">Examples</h2>
 <p><a href="http://flutejs.github.io/rcf/">http://flutejs.github.io/rcf/</a></p>
 <h2 id="install">Install</h2>
 <div class="highlight"><pre><code language=cmake>npm <span class="hljs-keyword">install</span> rcf</code></pre></div><h2 id="usage">Usage</h2>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'rcf'</span>;
-<span class="hljs-keyword">const</span> context = {};
-ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Rcf</span> <span class="hljs-attr">context</span>=<span class="hljs-string">{context}</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">A</span> /&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">Rcf</span>&gt;</span>, mountDom);</span></code></pre></div><h2 id="api">API</h2>
+<div class="highlight"><pre><code language=js><span class="hljs-keyword">const</span> A = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+
+  A:
+
+  {props.a} 
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> {
+    props.set({
+      a: props.a - 1,
+    });
+  }}&gt;
+    click
+  <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+<span class="hljs-keyword">const</span> B = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+
+  B:
+
+  {props.a} 
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+
+<span class="hljs-keyword">const</span> store = {a: <span class="hljs-number">1</span>};
+
+ReactDOM.render(&lt;div&gt;
+
+  &lt;Rcf store={store}&gt;
+    &lt;A /&gt;
+    &lt;B /&gt;
+  &lt;/Rcf&gt;
+
+  &lt;Rcf store={store}&gt;
+    &lt;B /&gt;
+  &lt;/Rcf&gt;
+
+&lt;/div&gt;, 
+
+mountDom);</code></pre></div><p><a href="http://flutejs.github.io/rcf/examples/example-a.html">http://flutejs.github.io/rcf/examples/example-a.html</a></p>
+<h2 id="api">API</h2>
 <h3 id="props">props</h3>
 <table class="table table-bordered table-striped">
     <thead>
@@ -760,28 +794,25 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-n
     </thead>
     <tbody>
         <tr>
-          <td>context</td>
+          <td>store</td>
           <td>object</td>
-          <td>context object</td>
+          <td>&quot;set, get&quot; can only called by props</td>
         </tr>
         <tr>
           <td>tag</td>
           <td>string | object</td>
-          <td>default: &#39;div&#39;</td>
+          <td>default: &#39;div&#39;, the root element
+            <div> When the number of children is greater than 1, set root element to tag </div></td>
         </tr>
         <tr>
           <td>set</td>
           <td>string</td>
-          <td>default: &#39;set&#39;</td>
+          <td>default: &#39;set&#39;, the name of set function.
+      <div>If you don&#39;t want to call &quot;this.props.set&quot;, you can set &quot;set&quot; to what you want, then you can use &quot;this.props.*&quot;</div>
+</td>
         </tr>
     </tbody>
 </table>
-
-
-<h2 id="test-case">Test Case</h2>
-<div class="highlight"><pre><code language=stata>npm <span class="hljs-keyword">run</span> <span class="hljs-keyword">test</span></code></pre></div><h2 id="license">License</h2>
-<p>Component is released under the MIT license.</p>
-
       </div>
     </div>
     <a href="http://github.com/flutejs/rcf"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
