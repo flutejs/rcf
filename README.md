@@ -89,7 +89,7 @@ http://flutejs.github.io/rcf/examples/example-a.html
           <td>tag</td>
           <td>string | object</td>
           <td>default: 'div', the root element
-            <div> When the number of children is greater than 1, set root element to tag </div></td>
+            <div> When the number of children is greater than 1, set root element to tag </div></td>
         </tr>
         <tr>
           <td>set</td>
