@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <title>
-    rcf@0.2.2
-  </title>
+  <meta charset="UTF-8">
+  <title>examples/example-b.md</title>
   <link href="//os.alipayobjects.com/rmsportal/iUKcdtKUFtONTig.css" rel="stylesheet"/>
   <style type="text/css">
   @font-face {
@@ -601,6 +598,34 @@
     margin: 0;
   }
 
+  .highlight pre {
+    padding: .8em 1em;
+    font: 14px/20px Consolas, Monaco, 'Andale Mono', monospace;
+    border: 1px solid #e5e8ec;
+    border-radius: 3px;
+    background-size: 40px 40px;
+    background-origin: content-box;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .highlight pre > code {
+    font-family: inherit;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    vertical-align: 2px;
+    display: block;
+    -moz-tab-size: 2;
+    -o-tab-size: 2;
+    tab-size: 2;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
   /*
 
   github.com style (c) Vasily Polovnyov <vast@whiteants.net>
@@ -700,56 +725,57 @@
   .hljs-strong {
     font-weight: bold;
   }
-
-  .header {
-    min-width: 200px;
-    max-width: 790px;
-    margin:0 auto;
+  .wrapper {
+    width: 86%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
+  .example {
+    padding: 20px 0;
+  }
+
+  </style>
+  <style type="text/css">
   
   </style>
 </head>
-
 <body>
-  <div>
+  <div class="wrapper">
     <div class="header">
-      <h1>rcf@0.2.2</h1>
+      <h1>examples/example-b.md</h1>
     </div>
-    <div class="examples">
-      <h3>EXAMPLES</h3>
-      <div class="examples-body">
-        <ul>
-        
-          <li>
-            <a href="./examples/example-a.html">
-              examples/example-a
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-b.html">
-              examples/example-b
-            </a>
-          </li>
-        
-      </ul>
+    <div class="example">
+      <div class="example-dom" id="__exampleDom"></div>
+
+      
+      <div class="example-html">
+        <div id="react-content"></div>
+      </div>
+      
+
+      <div class="example-scripts">
+      
+        <script src="../common.js"></script>
+      
+        <script src="example-b.js"></script>
+      
       </div>
     </div>
-    <div id="readme" class="boxed-group">
-      <h3>README.md</h3>
-      <div class="markdown-body">
-      <h1 id="rcf">Rcf</h1>
-<p><a href="https://npmjs.org/package/rcf"><img src="https://img.shields.io/npm/v/rcf.svg?style=flat" alt="NPM version"></a></p>
-<p>Rcf is a react component, it uses a clear and simple way to manage your state: Do not use &quot;this.state&quot; and &quot;this.setState&quot;, just use store, which is a plain object.</p>
-<p>Put your component in Rcf and Rcf allows it to get store by &quot;this.props.*&quot; and set store by &quot;this.props.set&quot;.When you call &#39;set&#39; function,it will change the value of store, then  all of the Rcf component using this store will be re rendered.</p>
-<h2 id="examples">Examples</h2>
-<p><a href="http://flutejs.github.io/rcf/">http://flutejs.github.io/rcf/</a></p>
-<h2 id="install">Install</h2>
-<div class="highlight"><pre><code language=cmake>npm <span class="hljs-keyword">install</span> rcf</code></pre></div><h2 id="usage">Usage</h2>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">const</span> A = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
 
-  A:
+    
+    <div id="desc" class="boxed-group">
+      <div class="markdown-body">
+      <h2>code</h2>
+<div class="highlight"><pre><code language=html><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"react-content"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></div>
+<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'index.js'</span>;
+
+<span class="hljs-keyword">const</span> A = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+
+  A: 
 
   {props.a} 
 
@@ -763,66 +789,51 @@
 
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
 
-<span class="hljs-keyword">const</span> B = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-
-  B:
-
-  {props.a} 
-
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
 
 
 <span class="hljs-keyword">const</span> store = {a: <span class="hljs-number">1</span>};
 
-ReactDOM.render(&lt;div&gt;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
 
-  &lt;Rcf store={store}&gt;
-    &lt;A /&gt;
-    &lt;B /&gt;
-  &lt;/Rcf&gt;
+  <span class="hljs-keyword">constructor</span>(props) {
+    <span class="hljs-keyword">super</span>(props);
+    <span class="hljs-keyword">this</span>.state = {
+      a: <span class="hljs-number">1</span>,
+    }
+    setInterval(()=&gt;{
+      <span class="hljs-keyword">this</span>.setState({
+        a: <span class="hljs-keyword">this</span>.state.a - <span class="hljs-number">1</span>,
+      })
+    },<span class="hljs-number">1000</span>);
+  }
 
-  &lt;Rcf store={store}&gt;
-    &lt;B /&gt;
-  &lt;/Rcf&gt;
+  render() {
 
-&lt;/div&gt;, 
+    <span class="hljs-keyword">return</span> &lt;div&gt;
 
-mountDom);</code></pre></div><p><a href="http://flutejs.github.io/rcf/examples/example-a.html">http://flutejs.github.io/rcf/examples/example-a.html</a></p>
-<h2 id="api">API</h2>
-<h3 id="props">props</h3>
-<table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th style="width: 100px;">name</th>
-        <th style="width: 50px;">type</th>
-        <th>description</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>store</td>
-          <td>object</td>
-          <td>plain object</td>
-        </tr>
-        <tr>
-          <td>tag</td>
-          <td>string | object</td>
-          <td>default: &#39;div&#39;, the root element
-            <div> When the number of children is greater than 1, set root element to tag </div></td>
-        </tr>
-        <tr>
-          <td>set</td>
-          <td>string</td>
-          <td>default: &#39;set&#39;, the name of set function.
-      <div>If you don&#39;t want to call &quot;this.props.set&quot;, you can set &quot;set&quot; to what you want, then you can use &quot;this.props.*&quot;</div>
-</td>
-        </tr>
-    </tbody>
-</table>
+      &lt;Rcf store={store}&gt;
+
+        &lt;A /&gt;
+
+        this.state.a: {this.state.a}
+
+      &lt;/Rcf&gt;
+
+    &lt;/div&gt;
+
+  }
+
+}
+
+
+ReactDOM.render(&lt;App /&gt;, 
+
+document.getElementById('react-content'));</code></pre></div>
       </div>
     </div>
-    <a href="http://github.com/flutejs/rcf"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+    
+
+    
   </div>
 </body>
-
 </html>
