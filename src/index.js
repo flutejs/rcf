@@ -26,10 +26,6 @@ class Rcf extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return false;
-  }
-
   componentWillUnmount() {
     const list = get(this.props.store);
     if (list) {
