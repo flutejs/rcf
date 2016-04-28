@@ -4,7 +4,7 @@
 
 Rcf is a react component, it uses a clear and simple way to manage your state: Do not use "this.state" and "this.setState", just use store, which is a plain object.
 
-Put your component in Rcf and Rcf allows it to get store by "this.props.*" and set store by "this.props.set".
+Put your component in Rcf and Rcf allows it to get store by "this.props.*" and set store by "this.props.set".When you call 'set' function,it will change the value of store, then  all of the Rcf component using this store will be re rendered.
 
 ## Examples
 
@@ -83,7 +83,7 @@ http://flutejs.github.io/rcf/examples/example-a.html
         <tr>
           <td>store</td>
           <td>object</td>
-          <td>"set, get" can only called by props</td>
+          <td>plain object</td>
         </tr>
         <tr>
           <td>tag</td>
