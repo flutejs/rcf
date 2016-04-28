@@ -1,6 +1,6 @@
 {
   "name": "rcf",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "simple context management",
   "homepage": "http://github.com/flutejs/rcf",
   "author": "yaya <yaya@uloveit.com.cn>",

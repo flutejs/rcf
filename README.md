@@ -53,6 +53,7 @@ ReactDOM.render(<div>
   
   <Rcf store={store}>
     <A />
+    <B />
   </Rcf>
   
   <Rcf store={store}>
