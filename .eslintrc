@@ -1,0 +1,10 @@
+{
+  "extends": "eslint-config-airbnb/base",
+  "rules": {
+    "no-console": [0]
+  },
+  "ecmaFeatures": {
+    "generators": 1,
+    "experimentalObjectRestSpread": true,
+  }
+}
