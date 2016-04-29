@@ -11,22 +11,28 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Rcf from 'index.js';
 
-const A = props => <div>
-  
-  A: 
 
-  {props.a} 
-  
-  <button onClick={() => {
-    props.set({
-      a: props.a - 1,
+class A extends Component {
+  handleClick = () => {
+    this.props.set({
+      a: this.props.a - 1,
     });
-  }}>
-    click
-  </button>
+  }
+  render() {
+    return <div>
 
-</div>
+      A:
 
+      {this.props.a}
+
+      <button onClick={this.handleClick}>
+        click
+      </button>
+
+    </div>;
+  }
+
+}
 
 
 const store = {a: 1};

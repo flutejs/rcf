@@ -22,29 +22,41 @@ npm install rcf
 ## Usage
 
 ```js
-const A = props => <div>
-  
-  A:
-
-  {props.a} 
-  
-  <button onClick={() => {
-    props.set({
-      a: props.a - 1,
+class A extends Component {
+  handleClick = () => {
+    this.props.set({
+      a: this.props.a - 1,
     });
-  }}>
-    click
-  </button>
+  }
+  render() {
+    return <div>
 
-</div>
+      A:
 
-const B = props => <div>
+      {this.props.a}
+
+      <button onClick={this.handleClick}>
+        click
+      </button>
+
+    </div>;
+  }
+
+}
+
+
+class B extends Component {
+  render() {
+    return <div>
   
-  B:
-  
-  {props.a} 
+      B:
+      
+      {this.props.a} 
 
-</div>
+    </div>;
+  }
+
+}
 
 
 const store = {a: 1};
@@ -60,7 +72,7 @@ ReactDOM.render(<div>
     <B />
   </Rcf>
 
-</div>, 
+</div>,
 
 mountDom);
 ```
@@ -69,7 +81,57 @@ http://flutejs.github.io/rcf/examples/example-a.html
 
 ## API
 
-### props
+### propsclass A extends Component {
+  handleClick = () => {
+    this.props.set({
+      a: this.props.a - 1,
+    });
+  }
+  render() {
+    return <div>
+
+      A:
+
+      {this.props.a}
+
+      <button onClick={this.handleClick}>
+        click
+      </button>
+
+    </div>;
+  }
+
+}
+
+
+class B extends Component {
+  render() {
+    return <div>
+  
+      B:
+      
+      {this.props.a} 
+
+    </div>;
+  }
+
+}
+
+
+const store = {a: 1};
+
+ReactDOM.render(<div>
+  
+  <Rcf store={store}>
+    <A />
+    <B />
+  </Rcf>
+  
+  <Rcf store={store}>
+    <B />
+  </Rcf>
+
+</div>,
 
 <table class="table table-bordered table-striped">
     <thead>
