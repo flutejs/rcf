@@ -14,6 +14,7 @@ class Rcf extends Component {
     tag: PropTypes.any,
     set: PropTypes.string,
     store: PropTypes.object.isRequired,
+    children: PropTypes.any,
   };
 
   constructor(props) {
@@ -30,7 +31,7 @@ class Rcf extends Component {
     const list = get(this.props.store);
     if (list) {
       const array = list.filter(item => item !== this.update);
-      if (array.length >=0 ) {
+      if (array.length >= 0) {
         set(this.props.store, array);
       } else {
         del(this.props.store);
@@ -50,11 +51,12 @@ class Rcf extends Component {
     this.forceUpdate();
   }
 
-  render() {  
-    const array = Children.map(this.props.children, child => isValidElement(child) ? cloneElement(child, {
-      ...this.props.store,
-      [this.props.set]: this.set,
-    }) : child);
+  render() {
+    const array = Children.map(this.props.children, child => (
+      isValidElement(child) ? cloneElement(child, {
+        ...this.props.store,
+        [this.props.set]: this.set,
+      }) : child));
     if (!array) {
       return null;
     }
@@ -62,9 +64,8 @@ class Rcf extends Component {
       return array[0];
     }
     const R = this.props.tag;
-    return <R {...this.props}>{array}</R>; 
+    return <R {...this.props}>{array}</R>;
   }
 }
-
 
 export default Rcf;

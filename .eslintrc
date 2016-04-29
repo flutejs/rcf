@@ -1,5 +1,6 @@
 {
-  "extends": "eslint-config-airbnb/base",
+  "extends": "eslint-config-airbnb",
+  "parser": "babel-eslint",
   "rules": {
     "no-console": [0]
   },
