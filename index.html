@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <title>
-    rcf@0.2.2
+    rcf@0.2.3
   </title>
   <link href="//os.alipayobjects.com/rmsportal/iUKcdtKUFtONTig.css" rel="stylesheet"/>
   <style type="text/css">
@@ -714,7 +714,7 @@
 <body>
   <div>
     <div class="header">
-      <h1>rcf@0.2.2</h1>
+      <h1>rcf@0.2.3</h1>
     </div>
     <div class="examples">
       <h3>EXAMPLES</h3>
@@ -747,29 +747,41 @@
 <p><a href="http://flutejs.github.io/rcf/">http://flutejs.github.io/rcf/</a></p>
 <h2 id="install">Install</h2>
 <div class="highlight"><pre><code language=cmake>npm <span class="hljs-keyword">install</span> rcf</code></pre></div><h2 id="usage">Usage</h2>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">const</span> A = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-
-  A:
-
-  {props.a} 
-
-  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> {
-    props.set({
-      a: props.a - 1,
+<div class="highlight"><pre><code language=js><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  handleClick = () =&gt; {
+    <span class="hljs-keyword">this</span>.props.set({
+      a: <span class="hljs-keyword">this</span>.props.a - <span class="hljs-number">1</span>,
     });
-  }}&gt;
-    click
-  <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  }
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
 
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+      A:
 
-<span class="hljs-keyword">const</span> B = props =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      {this.props.a}
 
-  B:
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{this.handleClick}</span>&gt;</span>
+        click
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 
-  {props.a} 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
 
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+}
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+
+      B:
+
+      {this.props.a} 
+
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
+
+}
 
 
 <span class="hljs-keyword">const</span> store = {a: <span class="hljs-number">1</span>};
@@ -785,11 +797,49 @@ ReactDOM.render(&lt;div&gt;
     &lt;B /&gt;
   &lt;/Rcf&gt;
 
-&lt;/div&gt;, 
+&lt;/div&gt;,
 
 mountDom);</code></pre></div><p><a href="http://flutejs.github.io/rcf/examples/example-a.html">http://flutejs.github.io/rcf/examples/example-a.html</a></p>
 <h2 id="api">API</h2>
-<h3 id="props">props</h3>
+<h3 id="propsclass-a-extends-component-">propsclass A extends Component {</h3>
+<p>  handleClick = () =&gt; {
+    this.props.set({
+      a: this.props.a - 1,
+    });
+  }
+  render() {
+    return <div></p>
+<div class="highlight"><pre><code language=dust><span class="xml">  A:
+
+  </span><span class="hljs-template-variable">{this.props.a}</span><span class="xml">
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=</span></span><span class="hljs-template-variable">{this.handleClick}</span><span class="xml"><span class="hljs-tag">&gt;</span>
+    click
+  <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>;</span></code></pre></div><p>  }</p>
+<p>}</p>
+<p>class B extends Component {
+  render() {
+    return <div></p>
+<div class="highlight"><pre><code language=axapta>  B:
+
+  {<span class="hljs-keyword">this</span>.props.a} 
+
+&lt;/<span class="hljs-keyword">div</span>&gt;;</code></pre></div><p>  }</p>
+<p>}</p>
+<p>const store = {a: 1};</p>
+<p>ReactDOM.render(<div></p>
+  <Rcf store={store}>
+    <A />
+    <B />
+  </Rcf>
+
+  <Rcf store={store}>
+    <B />
+  </Rcf>
+
+<p></div>,</p>
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
