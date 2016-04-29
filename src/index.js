@@ -58,7 +58,7 @@ class Rcf extends Component {
     if (!array) {
       return null;
     }
-    if (array.length === 1) {
+    if (array.length === 1 && isValidElement(array[0])) {
       return array[0];
     }
     const R = this.props.tag;
