@@ -14,8 +14,9 @@ import Rcf from 'index.js';
 
 class A extends Component {
   handleClick = () => {
-    this.props.set({
-      a: this.props.a - 1,
+    const store1 = this.props.store1;
+    store1.setStore({
+      a: store1.a - 2,
     });
   }
   render() {
@@ -23,7 +24,7 @@ class A extends Component {
 
       A:
 
-      {this.props.a}
+      {this.props.store1.a}
 
       <button onClick={this.handleClick}>
         click
@@ -35,42 +36,38 @@ class A extends Component {
 }
 
 
-const store = {a: 1};
-
-class App extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      a: 1,
-    }
-    setInterval(()=>{
-      this.setState({
-        a: this.state.a - 1,
-      })
-    },1000);
-  }
-
+class B extends Component {
   render() {
-
     return <div>
-
-      <Rcf store={store}>
-        
-        <A />
-
-        this.state.a: {this.state.a}
+  
+      B:
       
-      </Rcf>
+      {this.props.store1.a} 
 
-    </div>
-
+    </div>;
   }
 
 }
 
 
-ReactDOM.render(<App />, 
+const store = {
+  store1: {
+    a: 1,
+  },
+};
+
+ReactDOM.render(<div>
+  
+  <Rcf store={store}>
+    <A />
+    <B />
+  </Rcf>
+  
+  <Rcf store={store}>
+    <B />
+  </Rcf>
+
+</div>, 
 
 document.getElementById('react-content'));
 

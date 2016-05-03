@@ -1,50 +1,26 @@
 import React, { Component, PropTypes, Children, cloneElement, isValidElement } from 'react';
-import assign from 'object-assign';
-import { get, set, del } from './container';
+import { createStore, delStore, transformStore } from './store';
 
 
 class Rcf extends Component {
 
   static defaultProps = {
     tag: 'div',
-    set: 'set',
   };
 
   static propTypes = {
     tag: PropTypes.any,
-    set: PropTypes.string,
     store: PropTypes.object.isRequired,
     children: PropTypes.any,
   };
 
   constructor(props) {
     super(props);
-    const list = get(props.store);
-    if (list) {
-      list.push(this.update);
-    } else {
-      set(props.store, [this.update]);
-    }
+    createStore(props.store, this.update);
   }
 
   componentWillUnmount() {
-    const list = get(this.props.store);
-    if (list) {
-      const array = list.filter(item => item !== this.update);
-      if (array.length >= 0) {
-        set(this.props.store, array);
-      } else {
-        del(this.props.store);
-      }
-    }
-  }
-
-  set = store => {
-    assign(this.props.store, store);
-    const list = get(this.props.store);
-    if (list) {
-      list.forEach(item => item());
-    }
+    delStore(this.props.store, this.update);
   }
 
   update = () => {
@@ -52,10 +28,10 @@ class Rcf extends Component {
   }
 
   render() {
+    const store = transformStore(this.props.store, this);
     const array = Children.map(this.props.children, child => (
       isValidElement(child) ? cloneElement(child, {
-        ...this.props.store,
-        [this.props.set]: this.set,
+        ...store,
       }) : child));
     if (!array) {
       return null;

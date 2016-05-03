@@ -1,6 +1,6 @@
 {
   "name": "rcf",
-  "version": "0.2.5",
+  "version": "0.4.0",
   "description": "clear store management",
   "homepage": "http://github.com/flutejs/rcf",
   "author": "yaya <yaya@uloveit.com.cn>",
@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "es6-weak-map": "^2.0.1",
+    "is-plain-object": "^2.0.1",
+    "is-promise": "^2.1.0",
     "object-assign": "^4.0.1"
   },
   "devDependencies": {

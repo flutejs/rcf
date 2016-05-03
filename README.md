@@ -2,14 +2,85 @@
 
 [![NPM version](https://img.shields.io/npm/v/rcf.svg?style=flat)](https://npmjs.org/package/rcf)
 
-Rcf is a react component, it uses a clear and simple way to manage your state: Do not use "this.state" and "this.setState", just use store, which is a plain object.
+Rcf-x is a react component, it uses a clear and simple way to manage store.
 
-Put your component in Rcf and Rcf allows it to get store by "this.props.*" and set store by "this.props.set".When you call 'set' function,it will change the value of store, then  all of the Rcf component using this store will be re rendered.
+Put your component in Rcf and Rcf allows it to get store by "this.props.storeName.*"
 
-## Examples
 
-http://flutejs.github.io/rcf/
+## store
 
+The store is a plain object which can only be modified by function in store. If the type of the value is a function, it  will return a plain object or a promise,
+
+```js
+const store = {
+  store1: {
+    a: 1,
+    b: 1,
+      minus: (step, e) => ({
+        a: e.store.a - step
+      }),
+  },
+  store2: {
+    a: 2,
+    minus: (step, e) => new Promise(resolve => {
+        setTimeout(() => resolve({
+           a: e.store.a - step,
+        }), 1000);
+    }),
+  }
+};
+```
+
+or you can use e.setStore to handel async callback,
+
+```js
+const store = {
+  store1: {
+    a: 1,
+      minus: (step, e) => {
+      setTimeout(() => {
+        e.setStore({
+          a: e.store.a - step,  
+        });
+      }, 1000);
+      },
+  },
+  store2: {
+    a: 2,
+  }
+};
+```
+
+As you see, the last argument is an Event, which has properties:
+
+- store: Plain object
+
+- setStore: Function
+
+- target: React element
+
+
+There's a default function 'setStore' in store object. If you define a store:
+
+```js
+const store = {
+  store1: {},
+};
+``` 
+
+Rcf will transform it to
+
+```js
+const store = {
+  store1: {
+    setStore: obj => obj,
+  },
+};
+```
+
+So you can use "this.props.store1.setStore" in simple app.
+
+http://flutejs.github.io/rcf/examples/example-simple.html
 
 ## Install
 
@@ -19,21 +90,26 @@ npm install rcf
 ```
 
 
-## Usage
+## Example
+
+http://flutejs.github.io/rcf/
 
 ```js
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import Rcf from 'rcf';
+
+
 class A extends Component {
   handleClick = () => {
-    this.props.set({
-      a: this.props.a - 1,
-    });
+    this.props.store1.minus(2);
   }
   render() {
     return <div>
 
       A:
 
-      {this.props.a}
+      {this.props.store1.a}
 
       <button onClick={this.handleClick}>
         click
@@ -51,7 +127,7 @@ class B extends Component {
   
       B:
       
-      {this.props.a} 
+      {this.props.store1.a} 
 
     </div>;
   }
@@ -59,7 +135,14 @@ class B extends Component {
 }
 
 
-const store = {a: 1};
+const store = {
+  store1: {
+    a: 1,
+    minus: (step, e) => ({
+      a: e.store.a - step
+    })
+  },
+};
 
 ReactDOM.render(<div>
   
@@ -72,14 +155,18 @@ ReactDOM.render(<div>
     <B />
   </Rcf>
 
-</div>,
+</div>, 
 
 mountDom);
+
 ```
 
-http://flutejs.github.io/rcf/examples/example-a.html
+http://flutejs.github.io/rcf/examples/example-sync.html
+
 
 ## API
+
+### props
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -97,16 +184,10 @@ http://flutejs.github.io/rcf/examples/example-a.html
         </tr>
         <tr>
           <td>tag</td>
-          <td>string | object</td>
-          <td>default: 'div', the root element
-            <div> When the number of children is greater than 1, set root element to tag </div></td>
+            <td>string | object</td>
+          <td>default is 'div', the root element
+When the number of children is greater than 1, set root element to tag</td>
         </tr>
-        <tr>
-          <td>set</td>
-          <td>string</td>
-          <td>default: 'set', the name of set function.
-      <div>If you don't want to call "this.props.set", you can set "set" to what you want, then you can use "this.props.*"</div>
-</td>
-        </tr>
+ 
     </tbody>
 </table>

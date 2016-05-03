@@ -9,21 +9,19 @@
 ```js
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import isPromise from 'is-promise';
 import Rcf from 'index.js';
-
 
 class A extends Component {
   handleClick = () => {
-    this.props.set({
-      a: this.props.a - 1,
-    });
+    this.props.store1.asyncMinus(2);
   }
   render() {
     return <div>
 
       A:
 
-      {this.props.a}
+      {this.props.store1.a}
 
       <button onClick={this.handleClick}>
         click
@@ -41,7 +39,7 @@ class B extends Component {
   
       B:
       
-      {this.props.a} 
+      {this.props.store1.a} 
 
     </div>;
   }
@@ -49,7 +47,17 @@ class B extends Component {
 }
 
 
-const store = {a: 1};
+const store = {
+  store1: {
+    a: 1,
+    asyncMinus: (step, e) => new Promise(resolve => {
+      setTimeout(() => resolve({
+        a: e.store.a - step,
+      }), 1000);
+    }),
+  },
+};
+
 
 ReactDOM.render(<div>
   
