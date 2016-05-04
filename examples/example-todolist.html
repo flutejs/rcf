@@ -824,7 +824,7 @@
 };
 
 
-<span class="hljs-keyword">const</span> TodoList = ({todolist}) =&gt; {
+<span class="hljs-keyword">const</span> TodoList = ({ todolist }) =&gt; {
   <span class="hljs-keyword">const</span> { change, del, add, filter, list, changeFilter } = todolist;
   <span class="hljs-keyword">let</span> filterList;
   <span class="hljs-keyword">switch</span> (filter) {
@@ -857,12 +857,12 @@
 }
 
 
-const Todo = ({todo}) =&gt; {
+const Todo = ({ todo, change, del }) =&gt; {
   return &lt;li&gt;
-    &lt;span onClick={() =&gt; this.props.change(this.props.todo)} className={todo.completed ? 'completed' : 'not-completed'}&gt;
+    &lt;span onClick={() =&gt; change(todo)} className={todo.completed ? 'completed' : 'not-completed'}&gt;
       {todo.text} 
     &lt;/span&gt;
-    &lt;span onClick={() =&gt; this.props.del(this.props.todo)} className='del'&gt;x&lt;/span&gt;
+    &lt;span onClick={() =&gt; del(todo)} className='del'&gt;x&lt;/span&gt;
   &lt;/li&gt; 
 }
 
@@ -889,16 +889,12 @@ class AddTodo extends Component {
 }
 
 
-class Footer extends Component {
-  render() {
-    return &lt;div&gt;
-      &lt;div&gt;current:{this.props.filter}&lt;/div&gt;
-      &lt;button onClick={() =&gt; this.props.changeFilter('all')}&gt;all&lt;/button&gt;
-      &lt;button onClick={() =&gt; this.props.changeFilter('active')}&gt;active&lt;/button&gt;
-      &lt;button onClick={() =&gt; this.props.changeFilter('completed')}&gt;completed&lt;/button&gt;
-    &lt;/div&gt;;
-  }
-}
+const Footer = ({ filter, changeFilter }) =&gt; &lt;div&gt;
+  &lt;div&gt;current:{filter}&lt;/div&gt;
+  &lt;button onClick={() =&gt; changeFilter('all')}&gt;all&lt;/button&gt;
+  &lt;button onClick={() =&gt; changeFilter('active')}&gt;active&lt;/button&gt;
+  &lt;button onClick={() =&gt; changeFilter('completed')}&gt;completed&lt;/button&gt;
+&lt;/div&gt;;
 
 
 ReactDOM.render(&lt;Rcf store={store}&gt;
