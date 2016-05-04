@@ -10,21 +10,44 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { set, remove } from 'immutable-data';
+import 'todomvc-app-css/index.css'
+import * as Perf from 'react-addons-perf';
+import classnames from 'classnames';
+import { createSelector } from 'reselect'
 import Rcf from 'index.js';
 
+window.perfStart = function() {
+  Perf.start();
+}
+
+window.perfStop = function() {
+  Perf.stop();
+  Perf.printInclusive();
+  Perf.printWasted();
+}
+
+let id = 0;
+const list = [];
+const size = 10;
+for(let i=0;i < size;i++) {
+  list.push({
+    text: 'task ' + i,
+    completed: true,
+    id,
+  });
+  id ++;
+}
 
 const store = {
   todolist: { 
-    list: [{
-      text: 'task 1',
-      completed: true,
-    }],
+    list,
     add(text, e) {
       return {
-        list: [...e.store.list, {
+        list: [{
           text,
           completed: false,
-        }],
+          id: id++,
+        }, ...e.store.list],
       };
     },
     del(todo, e) {
@@ -47,54 +70,103 @@ const store = {
         filter,
       };
     },
+    clearCompleted(e) {
+      return {
+        list: e.store.list.filter(item => !item.completed),
+      };
+    },
+    toggle(e) {
+      return {
+        list: e.store.list.map(todo => ({
+          ...todo,
+          completed: !todo.completed,
+        })),
+      };
+    }
   },
 };
 
+const getVisibleTodos = createSelector([
+  obj => obj,
+], ({list, filter}) => {
+  switch (filter) {
+    case 'all':
+      return list;
+    case 'active':
+      return list.filter(todo => !todo.completed);
+    case 'completed':
+      return list.filter(todo => todo.completed);
+  }
+});
+
+const getActiveTodosCount = createSelector([
+  obj => obj,
+], list => {
+  return list.filter(t => !t.completed).length;
+});
+
 
 const TodoList = ({ todolist }) => {
-  const { change, del, add, filter, list, changeFilter } = todolist;
-  let filterList;
-  switch (filter) {
-    case "all":
-      filterList = list;
-      break;
-    case "completed":
-      filterList = list.filter(todo => todo.completed);
-      break;
-    case "active":
-      filterList = list.filter(todo => !todo.completed);
-      break;
-    default:
-      break;
-  }
+  const { change, del, add, filter, list, changeFilter, clearCompleted, toggle } = todolist;
+  let filterList = getVisibleTodos({
+    list,
+    filter,
+  });
   const todoProps = { change, del };
   const addTodoProps = { add };
-  const footerProps = { filter, changeFilter };
-  return <div>
-    <ul>
-      {
-        filterList.map((todo,index)=>
-          <Todo key={index} todo={todo} {...todoProps} />
-        )
-      }
-    </ul>
+  const footerProps = { list, filter, changeFilter, clearCompleted };
+  const toggleAllProps = { list, toggle };
+  return <div className="todoapp">
+    <header className="header">
+      <h1>todos</h1>
+    </header>
     <AddTodo {...addTodoProps} />
-    <Footer {...footerProps} />
+    <div className="main">
+      <ToggleAll {...toggleAllProps} />
+      <ul className="todo-list">
+        {
+          filterList.map(todo =>
+            <Todo key={todo.id} todo={todo} {...todoProps} />
+          )
+        }
+      </ul>
+      <Footer {...footerProps} />
+    </div>
   </div>;
-}
+};
 
 
-const Todo = ({ todo, change, del }) => {
-  return <li>
-    <span onClick={() => change(todo)} className={todo.completed ? 'completed' : 'not-completed'}>
-      {todo.text} 
-    </span>
-    <span onClick={() => del(todo)} className='del'>x</span>
-  </li> 
+class Todo extends Component {
+  shouldComponentUpdate(nextProps) {
+    return nextProps.todo !== this.props.todo;
+  }
+  render() {
+    console.log(1)
+    const { todo, change, del } = this.props;
+    return <li className={classnames({
+        completed: todo.completed,
+      })}>
+      <div className="view">
+        <input
+          className="toggle"
+          type="checkbox"
+          checked={todo.completed}
+          onChange={() => change(todo)} />
+        <label>
+          {todo.text}
+        </label>
+        <button className="destroy" onClick={() => del(todo)} />
+      </div>
+    </li>;
+  }
+
 }
 
 
 class AddTodo extends Component {
+  shouldComponentUpdate(nextProps) {
+    return false;
+  }
   handleSubmit = e => {
     e.preventDefault()
     const node = ReactDOM.findDOMNode(this.refs.input);
@@ -107,40 +179,71 @@ class AddTodo extends Component {
   }
   render() {
     return <form onSubmit={this.handleSubmit}>
-      <input type='text' ref='input' />
-      <button type="submit">
-        Add
-      </button>
+      <input type="text"
+        className="new-todo"
+        ref="input"
+        autoFocus="true"
+        placeholder="What needs to be done?"
+      />
+
     </form>;
   }
 }
 
 
-const Footer = ({ filter, changeFilter }) => <div>
-  <div>current:{filter}</div>
-  <button onClick={() => changeFilter('all')}>all</button>
-  <button onClick={() => changeFilter('active')}>active</button>
-  <button onClick={() => changeFilter('completed')}>completed</button>
-</div>;
+class Footer extends Component {
+  render() {
+    const { list, filter, changeFilter, clearCompleted } = this.props;
+    const activeCount = getActiveTodosCount(list);
+    const completedCount = list.length - activeCount;
+    return <footer className="footer">
+      <span className="todo-count">
+        <strong>{activeCount || 'No'}</strong>
+        {' '}
+        {activeCount === 1 ? 'item' : 'items'} left
+      </span>
+      <ul className="filters">
+        {[ 'all', 'active', 'completed' ].map(item =>
+          <li key={item}>
+            <a className={classnames({ selected: item === filter })}
+              style={{ cursor: 'pointer' }}
+              onClick={() => changeFilter(item)}
+            >
+              {item}
+            </a>
+          </li>
+        )}
+      </ul>
+      {
+        completedCount > 0 
+        &&
+        <button className="clear-completed"
+          onClick={() => clearCompleted()} >
+          Clear completed
+        </button>
+      }
+    </footer>;
+  }
+}
+
+
+class ToggleAll extends Component {
+  render() {
+    const { list, toggle } = this.props;
+    const completedCount = list.length - getActiveTodosCount(list);
+    return <input
+      className="toggle-all"
+      type="checkbox"
+      checked={completedCount === list.length}
+      onChange={() => toggle()}
+    />;
+  }
+}
+
 
 
 ReactDOM.render(<Rcf store={store}>
   <TodoList />
 </Rcf>,
 document.getElementById('react-content'));
-```
-
-```css
-.completed {
-  text-decoration: line-through;
-  cursor: pointer;
-}
-.not-completed {
-  text-decoration: none;
-  cursor: pointer;
-}
-.del {
-  margin-left: 20px;
-  cursor: pointer;
-}
 ```
