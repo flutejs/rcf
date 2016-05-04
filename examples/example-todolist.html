@@ -787,14 +787,21 @@
 
 
 <span class="hljs-keyword">const</span> store = {
-
-  todolist: {
-
+  todolist: { 
     list: [{
       text: <span class="hljs-string">'task 1'</span>,
       completed: <span class="hljs-literal">true</span>,
     }],
-
+    getFilterList(e) {
+      <span class="hljs-keyword">switch</span> (e.store.filter) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">"all"</span>:
+        <span class="hljs-keyword">return</span> e.store.list;
+      <span class="hljs-keyword">case</span> <span class="hljs-string">"completed"</span>:
+        <span class="hljs-keyword">return</span> e.store..filter(todo =&gt; todo.completed);
+      <span class="hljs-keyword">case</span> <span class="hljs-string">"active"</span>:
+        <span class="hljs-keyword">return</span> e.store..filter(todo =&gt; !todo.completed);
+      }
+    },
     add(text, e) {
       <span class="hljs-keyword">return</span> {
         list: [...e.store.list, {
@@ -803,14 +810,12 @@
         }],
       };
     },
-
     del(todo, e) {
       <span class="hljs-keyword">const</span> index = e.store.list.indexOf(todo);
       <span class="hljs-keyword">return</span> {
         list: remove(e.store.list, index),
       };
     },
-
     change(todo, e) {
       <span class="hljs-keyword">const</span> index = e.store.list.indexOf(todo);
       <span class="hljs-keyword">return</span> {
@@ -819,37 +824,20 @@
         }),
       };
     },
-
     filter: <span class="hljs-string">'all'</span>,
-
     changeFilter(filter) {
       <span class="hljs-keyword">return</span> {
         filter,
       };
     },
-
   },
 };
 
 
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">selectTodos</span>(<span class="hljs-params">todos, filter</span>) </span>{
-  <span class="hljs-keyword">switch</span> (filter) {
-  <span class="hljs-keyword">case</span> <span class="hljs-string">"all"</span>:
-    <span class="hljs-keyword">return</span> todos;
-  <span class="hljs-keyword">case</span> <span class="hljs-string">"completed"</span>:
-    <span class="hljs-keyword">return</span> todos.filter(todo =&gt; todo.completed);
-  <span class="hljs-keyword">case</span> <span class="hljs-string">"active"</span>:
-    <span class="hljs-keyword">return</span> todos.filter(todo =&gt; !todo.completed);
-  }
-}
-
-
-
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TodoList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
   render() {  
-    <span class="hljs-keyword">const</span> { change, del, add, filter, changeFilter } = <span class="hljs-keyword">this</span>.props.todolist;
-    <span class="hljs-keyword">const</span> list = selectTodos(<span class="hljs-keyword">this</span>.props.todolist.list, filter);
+    <span class="hljs-keyword">const</span> { change, del, add, filter, changeFilter, getFilterList } = <span class="hljs-keyword">this</span>.props.todolist;
+    <span class="hljs-keyword">const</span> list = getFilterList();
     <span class="hljs-keyword">const</span> todoProps = { change, del };
     <span class="hljs-keyword">const</span> addTodoProps = { add };
     <span class="hljs-keyword">const</span> footerProps = { filter, changeFilter };
@@ -869,22 +857,17 @@
 
 
 class Todo extends Component {
-  handleChange = () =&gt; {
-    this.props.change(this.props.todo);
-  }
-  handleDel = () =&gt; {
-    this.props.del(this.props.todo);
-  }
   render() {
     const todo = this.props.todo;
     return &lt;li&gt;
-      &lt;span onClick={this.handleChange} className={todo.completed ? 'completed' : 'not-completed'}&gt;
+      &lt;span onClick={() =&gt; this.props.change(this.props.todo)} className={todo.completed ? 'completed' : 'not-completed'}&gt;
         {todo.text} 
       &lt;/span&gt;
-      &lt;span onClick={this.handleDel} className='del'&gt;x&lt;/span&gt;
+      &lt;span onClick={() =&gt; this.props.del(this.props.todo)} className='del'&gt;x&lt;/span&gt;
     &lt;/li&gt;
   }  
 }
+
 
 class AddTodo extends Component {
   handleSubmit = e =&gt; {
@@ -907,31 +890,22 @@ class AddTodo extends Component {
   }
 }
 
+
 class Footer extends Component {
   render() {
     return &lt;div&gt;
-
       &lt;div&gt;current:{this.props.filter}&lt;/div&gt;
-
-      &lt;a href="#" onClick={() =&gt; this.props.changeFilter('all')}&gt;all&lt;/a&gt;
-      {' '}
-      &lt;a href="#" onClick={() =&gt; this.props.changeFilter('active')}&gt;active&lt;/a&gt;
-      {' '}
-      &lt;a href="#" onClick={() =&gt; this.props.changeFilter('completed')}&gt;completed&lt;/a&gt;
-
+      &lt;button onClick={() =&gt; this.props.changeFilter('all')}&gt;all&lt;/button&gt;
+      &lt;button onClick={() =&gt; this.props.changeFilter('active')}&gt;active&lt;/button&gt;
+      &lt;button onClick={() =&gt; this.props.changeFilter('completed')}&gt;completed&lt;/button&gt;
     &lt;/div&gt;;
   }
 }
 
 
-ReactDOM.render(&lt;div&gt;
-
-  &lt;Rcf store={store}&gt;
-    &lt;TodoList /&gt;
-  &lt;/Rcf&gt;
-
-&lt;/div&gt;, 
-
+ReactDOM.render(&lt;Rcf store={store}&gt;
+  &lt;TodoList /&gt;
+&lt;/Rcf&gt;,
 document.getElementById('react-content'));</code></pre></div>
 <div class="highlight"><pre><code language=css><span class="hljs-selector-class">.completed</span> {
   <span class="hljs-attribute">text-decoration</span>: line-through;
