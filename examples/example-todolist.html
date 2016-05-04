@@ -738,7 +738,18 @@
 
   </style>
   <style type="text/css">
-  
+  .completed {
+  text-decoration: line-through;
+  cursor: pointer;
+}
+.not-completed {
+  text-decoration: none;
+  cursor: pointer;
+}
+.del {
+  margin-left: 20px;
+  cursor: pointer;
+}
   </style>
 </head>
 <body>
@@ -769,135 +780,171 @@
       <div class="markdown-body">
       <h2>code</h2>
 <div class="highlight"><pre><code language=html><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"react-content"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></div>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> React, { Component, PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> { set, remove } <span class="hljs-keyword">from</span> <span class="hljs-string">'immutable-data'</span>;
 <span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'index.js'</span>;
 
 
+<span class="hljs-keyword">const</span> store = {
 
-<span class="hljs-comment">// TodoList.jsx</span>
+  todolist: {
 
-<span class="hljs-keyword">const</span> TodoList = (props, context) =&gt; 
-
-&lt;div&gt;
-  {
-    context.list.map(item =&gt; 
-      &lt;Rcf context={item}&gt;
-        &lt;Todo /&gt;
-      &lt;/Rcf&gt;
-    )
-  }
-  &lt;AddTodo /&gt;
-  &lt;Footer /&gt;
-&lt;/div&gt;
-
-TodoList.contextTypes = {
-  list: PropTypes.array,
-};
-
-
-
-// Todo.jsx
-
-const Todo = (props, context) =&gt; 
-
-&lt;div style={{
-  textDecoration: context.completed ? 'line-through' : 'none',
-  cursor:'pointer'
-  }} onClick={() =&gt; {
-    handleTodoClick(context);
-  }}&gt;
-
-  {context.text}
-
-&lt;/div&gt;
-
-Todo.contextTypes = {
-  set: PropTypes.func,
-  text: PropTypes.string,
-  completed: PropTypes.bool,
-};
-
-const handleTodoClick = (context) =&gt; {
-  context.set({
-    ...context,
-    completed: !context.completed,
-  });
-};
-
-
-
-// AddTodo.jsx
-
-const AddTodo = (props, context) =&gt; 
-
-&lt;form onSubmit={e =&gt; {
-  e.preventDefault();
-  const node = document.querySelector('input', e.target);
-  const text = node.value.trim()
-  if (!text){
-    return;
-  }
-  handleAddTodoSubmit(context, text);
-  node.value = '';
-  node.focus();
-}}&gt;
-  &lt;input type='text' /&gt;
-  &lt;button type="submit"&gt;
-    Add
-  &lt;/button&gt;
-&lt;/form&gt;
-
-AddTodo.contextTypes = {
-  set: PropTypes.func,
-  list: PropTypes.array,
-};
-
-const handleAddTodoSubmit = (context, text) =&gt; {
-  context.set({
-    list: [...context.list, {
-      text,
-      completed: false,
+    list: [{
+      text: <span class="hljs-string">'task 1'</span>,
+      completed: <span class="hljs-literal">true</span>,
     }],
-  });
+
+    add(text, e) {
+      <span class="hljs-keyword">return</span> {
+        list: [...e.store.list, {
+          text,
+          completed: <span class="hljs-literal">false</span>,
+        }],
+      };
+    },
+
+    del(todo, e) {
+      <span class="hljs-keyword">const</span> index = e.store.list.indexOf(todo);
+      <span class="hljs-keyword">return</span> {
+        list: remove(e.store.list, index),
+      };
+    },
+
+    change(todo, e) {
+      <span class="hljs-keyword">const</span> index = e.store.list.indexOf(todo);
+      <span class="hljs-keyword">return</span> {
+        list: set(e.store.list, {
+          [<span class="hljs-string">`<span class="hljs-subst">${index}</span>.completed`</span>]: !e.store.list[index].completed,
+        }),
+      };
+    },
+
+    filter: <span class="hljs-string">'all'</span>,
+
+    changeFilter(filter) {
+      <span class="hljs-keyword">return</span> {
+        filter,
+      };
+    },
+
+  },
 };
 
 
 
-// Footer.jsx
-
-const Footer = (props, context) =&gt; 
-
-&lt;div&gt;
-
-  all
-  active
-  completed
-
-&lt;/div&gt;
-
-Footer.contextTypes = {
-  list: PropTypes.array,
-};
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">selectTodos</span>(<span class="hljs-params">todos, filter</span>) </span>{
+  <span class="hljs-keyword">switch</span> (filter) {
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"all"</span>:
+    <span class="hljs-keyword">return</span> todos;
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"completed"</span>:
+    <span class="hljs-keyword">return</span> todos.filter(todo =&gt; todo.completed);
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"active"</span>:
+    <span class="hljs-keyword">return</span> todos.filter(todo =&gt; !todo.completed);
+  }
+}
 
 
 
-// App.jsx
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TodoList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  render() {  
+    <span class="hljs-keyword">const</span> { change, del, add, filter, changeFilter } = <span class="hljs-keyword">this</span>.props.todolist;
+    <span class="hljs-keyword">const</span> list = selectTodos(<span class="hljs-keyword">this</span>.props.todolist.list, filter);
+    <span class="hljs-keyword">const</span> todoProps = { change, del };
+    <span class="hljs-keyword">const</span> addTodoProps = { add };
+    <span class="hljs-keyword">const</span> footerProps = { filter, changeFilter };
+    <span class="hljs-keyword">return</span> &lt;div&gt;
+      &lt;ul&gt;
+        {
+          list.map((todo,index)=&gt;
+            &lt;Todo key={index} todo={todo} {...todoProps} /&gt;
+          )
+        }
+      &lt;/ul&gt;
+      &lt;AddTodo {...addTodoProps} /&gt;
+      &lt;Footer {...footerProps} /&gt;
+    &lt;/div&gt;;
+  }
+}
 
-const context = {
-  list: [{
-    text:'todo1',
-    completed: true,
-  }],
-};
 
-const App = () =&gt; &lt;Rcf context={context}&gt;
-  &lt;TodoList /&gt;
-&lt;/Rcf&gt;
+class Todo extends Component {
+  handleChange = () =&gt; {
+    this.props.change(this.props.todo);
+  }
+  handleDel = () =&gt; {
+    this.props.del(this.props.todo);
+  }
+  render() {
+    const todo = this.props.todo;
+    return &lt;li&gt;
+      &lt;span onClick={this.handleChange} className={todo.completed ? 'completed' : 'not-completed'}&gt;
+        {todo.text} 
+      &lt;/span&gt;
+      &lt;span onClick={this.handleDel} className='del'&gt;x&lt;/span&gt;
+    &lt;/li&gt;
+  }  
+}
 
-ReactDOM.render(&lt;App /&gt;
-  ,
+class AddTodo extends Component {
+  handleSubmit = e =&gt; {
+    e.preventDefault()
+    const node = ReactDOM.findDOMNode(this.refs.input);
+    const text = node.value.trim()
+    if (!text){
+      return;
+    }
+    this.props.add(text);
+    node.value = ""
+  }
+  render() {
+    return &lt;form onSubmit={this.handleSubmit}&gt;
+      &lt;input type='text' ref='input' /&gt;
+      &lt;button type="submit"&gt;
+        Add
+      &lt;/button&gt;
+    &lt;/form&gt;;
+  }
+}
+
+class Footer extends Component {
+  render() {
+    return &lt;div&gt;
+
+      &lt;div&gt;current:{this.props.filter}&lt;/div&gt;
+
+      &lt;a href="#" onClick={() =&gt; this.props.changeFilter('all')}&gt;all&lt;/a&gt;
+      {' '}
+      &lt;a href="#" onClick={() =&gt; this.props.changeFilter('active')}&gt;active&lt;/a&gt;
+      {' '}
+      &lt;a href="#" onClick={() =&gt; this.props.changeFilter('completed')}&gt;completed&lt;/a&gt;
+
+    &lt;/div&gt;;
+  }
+}
+
+
+ReactDOM.render(&lt;div&gt;
+
+  &lt;Rcf store={store}&gt;
+    &lt;TodoList /&gt;
+  &lt;/Rcf&gt;
+
+&lt;/div&gt;, 
+
 document.getElementById('react-content'));</code></pre></div>
+<div class="highlight"><pre><code language=css><span class="hljs-selector-class">.completed</span> {
+  <span class="hljs-attribute">text-decoration</span>: line-through;
+  <span class="hljs-attribute">cursor</span>: pointer;
+}
+<span class="hljs-selector-class">.not-completed</span> {
+  <span class="hljs-attribute">text-decoration</span>: none;
+  <span class="hljs-attribute">cursor</span>: pointer;
+}
+<span class="hljs-selector-class">.del</span> {
+  <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">20px</span>;
+  <span class="hljs-attribute">cursor</span>: pointer;
+}</code></pre></div>
       </div>
     </div>
     
