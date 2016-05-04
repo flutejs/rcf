@@ -792,16 +792,6 @@
       text: <span class="hljs-string">'task 1'</span>,
       completed: <span class="hljs-literal">true</span>,
     }],
-    getFilterList(e) {
-      <span class="hljs-keyword">switch</span> (e.store.filter) {
-      <span class="hljs-keyword">case</span> <span class="hljs-string">"all"</span>:
-        <span class="hljs-keyword">return</span> e.store.list;
-      <span class="hljs-keyword">case</span> <span class="hljs-string">"completed"</span>:
-        <span class="hljs-keyword">return</span> e.store..filter(todo =&gt; todo.completed);
-      <span class="hljs-keyword">case</span> <span class="hljs-string">"active"</span>:
-        <span class="hljs-keyword">return</span> e.store..filter(todo =&gt; !todo.completed);
-      }
-    },
     add(text, e) {
       <span class="hljs-keyword">return</span> {
         list: [...e.store.list, {
@@ -834,38 +824,46 @@
 };
 
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TodoList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
-  render() {  
-    <span class="hljs-keyword">const</span> { change, del, add, filter, changeFilter, getFilterList } = <span class="hljs-keyword">this</span>.props.todolist;
-    <span class="hljs-keyword">const</span> list = getFilterList();
-    <span class="hljs-keyword">const</span> todoProps = { change, del };
-    <span class="hljs-keyword">const</span> addTodoProps = { add };
-    <span class="hljs-keyword">const</span> footerProps = { filter, changeFilter };
-    <span class="hljs-keyword">return</span> &lt;div&gt;
-      &lt;ul&gt;
-        {
-          list.map((todo,index)=&gt;
-            &lt;Todo key={index} todo={todo} {...todoProps} /&gt;
-          )
-        }
-      &lt;/ul&gt;
-      &lt;AddTodo {...addTodoProps} /&gt;
-      &lt;Footer {...footerProps} /&gt;
-    &lt;/div&gt;;
+<span class="hljs-keyword">const</span> TodoList = ({todolist}) =&gt; {
+  <span class="hljs-keyword">const</span> { change, del, add, filter, list, changeFilter } = todolist;
+  <span class="hljs-keyword">let</span> filterList;
+  <span class="hljs-keyword">switch</span> (filter) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">"all"</span>:
+      filterList = list;
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">"completed"</span>:
+      filterList = list.filter(todo =&gt; todo.completed);
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">"active"</span>:
+      filterList = list.filter(todo =&gt; !todo.completed);
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">default</span>:
+      <span class="hljs-keyword">break</span>;
   }
+  <span class="hljs-keyword">const</span> todoProps = { change, del };
+  <span class="hljs-keyword">const</span> addTodoProps = { add };
+  <span class="hljs-keyword">const</span> footerProps = { filter, changeFilter };
+  <span class="hljs-keyword">return</span> &lt;div&gt;
+    &lt;ul&gt;
+      {
+        filterList.map((todo,index)=&gt;
+          &lt;Todo key={index} todo={todo} {...todoProps} /&gt;
+        )
+      }
+    &lt;/ul&gt;
+    &lt;AddTodo {...addTodoProps} /&gt;
+    &lt;Footer {...footerProps} /&gt;
+  &lt;/div&gt;;
 }
 
 
-class Todo extends Component {
-  render() {
-    const todo = this.props.todo;
-    return &lt;li&gt;
-      &lt;span onClick={() =&gt; this.props.change(this.props.todo)} className={todo.completed ? 'completed' : 'not-completed'}&gt;
-        {todo.text} 
-      &lt;/span&gt;
-      &lt;span onClick={() =&gt; this.props.del(this.props.todo)} className='del'&gt;x&lt;/span&gt;
-    &lt;/li&gt;
-  }  
+const Todo = ({todo}) =&gt; {
+  return &lt;li&gt;
+    &lt;span onClick={() =&gt; this.props.change(this.props.todo)} className={todo.completed ? 'completed' : 'not-completed'}&gt;
+      {todo.text} 
+    &lt;/span&gt;
+    &lt;span onClick={() =&gt; this.props.del(this.props.todo)} className='del'&gt;x&lt;/span&gt;
+  &lt;/li&gt; 
 }
 
 
