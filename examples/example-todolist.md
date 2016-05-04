@@ -26,27 +26,26 @@ window.perfStop = function() {
   Perf.printWasted();
 }
 
-let id = 0;
-const list = [];
-const size = 10;
-for(let i=0;i < size;i++) {
-  list.push({
+let ID = 0;
+const LIST = [];
+const SIZE = 10;
+for(let i=0;i < SIZE; i++) {
+  LIST.push({
     text: 'task ' + i,
     completed: true,
-    id,
+    id: ID++,
   });
-  id ++;
 }
 
 const store = {
   todolist: { 
-    list,
+    list: LIST,
     add(text, e) {
       return {
         list: [{
           text,
           completed: false,
-          id: id++,
+          id: ID++,
         }, ...e.store.list],
       };
     },
@@ -164,18 +163,30 @@ class Todo extends Component {
 
 
 class AddTodo extends Component {
-  shouldComponentUpdate(nextProps) {
-    return false;
+  constructor() {
+    super(...arguments)
+    this.state = {
+      text: ''
+    };
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.text !== nextState.text;
+  }
+  handleChange = e => {
+    this.setState({
+      text: e.target.value,
+    });
   }
   handleSubmit = e => {
     e.preventDefault()
-    const node = ReactDOM.findDOMNode(this.refs.input);
-    const text = node.value.trim()
+    const text = this.state.text;
     if (!text){
       return;
     }
     this.props.add(text);
-    node.value = ""
+    this.setState({
+      text: '',
+    });
   }
   render() {
     return <form onSubmit={this.handleSubmit}>
@@ -184,8 +195,9 @@ class AddTodo extends Component {
         ref="input"
         autoFocus="true"
         placeholder="What needs to be done?"
+        value={this.state.text}
+        onChange={this.handleChange}
       />
-
     </form>;
   }
 }
