@@ -19,16 +19,6 @@ const store = {
       text: 'task 1',
       completed: true,
     }],
-    getFilterList(e) {
-      switch (e.store.filter) {
-      case "all":
-        return e.store.list;
-      case "completed":
-        return e.store..filter(todo => todo.completed);
-      case "active":
-        return e.store..filter(todo => !todo.completed);
-      }
-    },
     add(text, e) {
       return {
         list: [...e.store.list, {
@@ -61,38 +51,46 @@ const store = {
 };
 
 
-class TodoList extends Component {
-  render() {  
-    const { change, del, add, filter, changeFilter, getFilterList } = this.props.todolist;
-    const list = getFilterList();
-    const todoProps = { change, del };
-    const addTodoProps = { add };
-    const footerProps = { filter, changeFilter };
-    return <div>
-      <ul>
-        {
-          list.map((todo,index)=>
-            <Todo key={index} todo={todo} {...todoProps} />
-          )
-        }
-      </ul>
-      <AddTodo {...addTodoProps} />
-      <Footer {...footerProps} />
-    </div>;
+const TodoList = ({todolist}) => {
+  const { change, del, add, filter, list, changeFilter } = todolist;
+  let filterList;
+  switch (filter) {
+    case "all":
+      filterList = list;
+      break;
+    case "completed":
+      filterList = list.filter(todo => todo.completed);
+      break;
+    case "active":
+      filterList = list.filter(todo => !todo.completed);
+      break;
+    default:
+      break;
   }
+  const todoProps = { change, del };
+  const addTodoProps = { add };
+  const footerProps = { filter, changeFilter };
+  return <div>
+    <ul>
+      {
+        filterList.map((todo,index)=>
+          <Todo key={index} todo={todo} {...todoProps} />
+        )
+      }
+    </ul>
+    <AddTodo {...addTodoProps} />
+    <Footer {...footerProps} />
+  </div>;
 }
 
 
-class Todo extends Component {
-  render() {
-    const todo = this.props.todo;
-    return <li>
-      <span onClick={() => this.props.change(this.props.todo)} className={todo.completed ? 'completed' : 'not-completed'}>
-        {todo.text} 
-      </span>
-      <span onClick={() => this.props.del(this.props.todo)} className='del'>x</span>
-    </li>
-  }  
+const Todo = ({todo}) => {
+  return <li>
+    <span onClick={() => this.props.change(this.props.todo)} className={todo.completed ? 'completed' : 'not-completed'}>
+      {todo.text} 
+    </span>
+    <span onClick={() => this.props.del(this.props.todo)} className='del'>x</span>
+  </li> 
 }
 
 
