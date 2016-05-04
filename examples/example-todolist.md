@@ -51,7 +51,7 @@ const store = {
 };
 
 
-const TodoList = ({todolist}) => {
+const TodoList = ({ todolist }) => {
   const { change, del, add, filter, list, changeFilter } = todolist;
   let filterList;
   switch (filter) {
@@ -84,12 +84,12 @@ const TodoList = ({todolist}) => {
 }
 
 
-const Todo = ({todo}) => {
+const Todo = ({ todo, change, del }) => {
   return <li>
-    <span onClick={() => this.props.change(this.props.todo)} className={todo.completed ? 'completed' : 'not-completed'}>
+    <span onClick={() => change(todo)} className={todo.completed ? 'completed' : 'not-completed'}>
       {todo.text} 
     </span>
-    <span onClick={() => this.props.del(this.props.todo)} className='del'>x</span>
+    <span onClick={() => del(todo)} className='del'>x</span>
   </li> 
 }
 
@@ -116,16 +116,12 @@ class AddTodo extends Component {
 }
 
 
-class Footer extends Component {
-  render() {
-    return <div>
-      <div>current:{this.props.filter}</div>
-      <button onClick={() => this.props.changeFilter('all')}>all</button>
-      <button onClick={() => this.props.changeFilter('active')}>active</button>
-      <button onClick={() => this.props.changeFilter('completed')}>completed</button>
-    </div>;
-  }
-}
+const Footer = ({ filter, changeFilter }) => <div>
+  <div>current:{filter}</div>
+  <button onClick={() => changeFilter('all')}>all</button>
+  <button onClick={() => changeFilter('active')}>active</button>
+  <button onClick={() => changeFilter('completed')}>completed</button>
+</div>;
 
 
 ReactDOM.render(<Rcf store={store}>
