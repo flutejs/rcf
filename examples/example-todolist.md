@@ -75,11 +75,20 @@ const store = {
       };
     },
     toggle(e) {
+      const activeTodosCount = getActiveTodosCount(e.store.list);
+      if (activeTodosCount === 0 || e.store.list.length === activeTodosCount) {
+        return {
+          list: e.store.list.map(todo => ({
+            ...todo,
+            completed: !todo.completed,
+          })),
+        };
+      }
       return {
-        list: e.store.list.map(todo => ({
+        list: e.store.list.map(todo => todo.completed ? todo : {
           ...todo,
-          completed: !todo.completed,
-        })),
+          completed: true,
+        }),
       };
     }
   },
