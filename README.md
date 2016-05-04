@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/rcf.svg?style=flat)](https://npmjs.org/package/rcf)
 
-Rcf-x is a react component, it uses a clear and simple way to manage store.
+Rcf is a react component, it uses a clear and simple way to manage store.
 
 Put your component in Rcf and Rcf allows it to get store by "this.props.storeName.*"
 
