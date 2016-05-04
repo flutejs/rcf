@@ -14,14 +14,21 @@ import Rcf from 'index.js';
 
 
 const store = {
-
-  todolist: {
-    
+  todolist: { 
     list: [{
       text: 'task 1',
       completed: true,
     }],
-
+    getFilterList(e) {
+      switch (e.store.filter) {
+      case "all":
+        return e.store.list;
+      case "completed":
+        return e.store..filter(todo => todo.completed);
+      case "active":
+        return e.store..filter(todo => !todo.completed);
+      }
+    },
     add(text, e) {
       return {
         list: [...e.store.list, {
@@ -30,14 +37,12 @@ const store = {
         }],
       };
     },
-
     del(todo, e) {
       const index = e.store.list.indexOf(todo);
       return {
         list: remove(e.store.list, index),
       };
     },
-
     change(todo, e) {
       const index = e.store.list.indexOf(todo);
       return {
@@ -46,37 +51,20 @@ const store = {
         }),
       };
     },
-
     filter: 'all',
-
     changeFilter(filter) {
       return {
         filter,
       };
     },
-
   },
 };
 
 
-
-function selectTodos(todos, filter) {
-  switch (filter) {
-  case "all":
-    return todos;
-  case "completed":
-    return todos.filter(todo => todo.completed);
-  case "active":
-    return todos.filter(todo => !todo.completed);
-  }
-}
-
-
-
 class TodoList extends Component {
   render() {  
-    const { change, del, add, filter, changeFilter } = this.props.todolist;
-    const list = selectTodos(this.props.todolist.list, filter);
+    const { change, del, add, filter, changeFilter, getFilterList } = this.props.todolist;
+    const list = getFilterList();
     const todoProps = { change, del };
     const addTodoProps = { add };
     const footerProps = { filter, changeFilter };
@@ -96,22 +84,17 @@ class TodoList extends Component {
 
 
 class Todo extends Component {
-  handleChange = () => {
-    this.props.change(this.props.todo);
-  }
-  handleDel = () => {
-    this.props.del(this.props.todo);
-  }
   render() {
     const todo = this.props.todo;
     return <li>
-      <span onClick={this.handleChange} className={todo.completed ? 'completed' : 'not-completed'}>
+      <span onClick={() => this.props.change(this.props.todo)} className={todo.completed ? 'completed' : 'not-completed'}>
         {todo.text} 
       </span>
-      <span onClick={this.handleDel} className='del'>x</span>
+      <span onClick={() => this.props.del(this.props.todo)} className='del'>x</span>
     </li>
   }  
 }
+
 
 class AddTodo extends Component {
   handleSubmit = e => {
@@ -134,33 +117,23 @@ class AddTodo extends Component {
   }
 }
 
+
 class Footer extends Component {
   render() {
     return <div>
-        
       <div>current:{this.props.filter}</div>
-
-      <a href="#" onClick={() => this.props.changeFilter('all')}>all</a>
-      {' '}
-      <a href="#" onClick={() => this.props.changeFilter('active')}>active</a>
-      {' '}
-      <a href="#" onClick={() => this.props.changeFilter('completed')}>completed</a>
-
+      <button onClick={() => this.props.changeFilter('all')}>all</button>
+      <button onClick={() => this.props.changeFilter('active')}>active</button>
+      <button onClick={() => this.props.changeFilter('completed')}>completed</button>
     </div>;
   }
 }
 
 
-ReactDOM.render(<div>
-  
-  <Rcf store={store}>
-    <TodoList />
-  </Rcf>
-
-</div>, 
-
+ReactDOM.render(<Rcf store={store}>
+  <TodoList />
+</Rcf>,
 document.getElementById('react-content'));
-
 ```
 
 ```css
