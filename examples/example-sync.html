@@ -776,7 +776,7 @@
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
   handleClick = () =&gt; {
-    <span class="hljs-keyword">this</span>.props.store1.minus(<span class="hljs-number">2</span>);
+    <span class="hljs-keyword">this</span>.props.store1.minus2(<span class="hljs-number">2</span>);
   }
   render() {
     <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
@@ -812,6 +812,9 @@
 <span class="hljs-keyword">const</span> store = {
   store1: {
     a: <span class="hljs-number">1</span>,
+    minus2: (step, e) =&gt; {
+      <span class="hljs-keyword">return</span> e.store.minus(step, e);
+    },
     minus: (step, e) =&gt; ({
       a: e.store.a - step
     })

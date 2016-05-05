@@ -817,14 +817,17 @@
       <span class="hljs-keyword">const</span> item = obj[key];
       map[name][key] = <span class="hljs-keyword">typeof</span> item === <span class="hljs-string">'function'</span> ? <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
           <span class="hljs-keyword">const</span> e = <span class="hljs-built_in">arguments</span>[<span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">1</span>];
-          <span class="hljs-keyword">const</span> setStore = e.setStore;
-          e.setStore = obj =&gt; {
-            <span class="hljs-built_in">console</span>.log(e.target);
-            <span class="hljs-built_in">console</span>.log(name + <span class="hljs-string">' '</span> + key);
-            <span class="hljs-built_in">console</span>.log(e.store);
-            setStore(obj);
-            <span class="hljs-built_in">console</span>.log(e.store);
-          };
+          <span class="hljs-keyword">const</span> setStore = e.setStore;   
+          <span class="hljs-keyword">if</span> (!e.setStore.logger) {
+            e.setStore = obj =&gt; {
+              <span class="hljs-built_in">console</span>.log(e.target);
+              <span class="hljs-built_in">console</span>.log(name + <span class="hljs-string">' '</span> + key);
+              <span class="hljs-built_in">console</span>.log(e.store);
+              setStore(obj);
+              <span class="hljs-built_in">console</span>.log(e.store);
+            };
+            e.setStore.logger = <span class="hljs-literal">true</span>;
+          }
           <span class="hljs-keyword">return</span> item(...arguments);
         } : item;
     }
