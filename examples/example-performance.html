@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>examples/example-todolist.md</title>
+  <title>examples/example-performance.md</title>
   <link href="//os.alipayobjects.com/rmsportal/iUKcdtKUFtONTig.css" rel="stylesheet"/>
   <style type="text/css">
   @font-face {
@@ -744,7 +744,7 @@
 <body>
   <div class="wrapper">
     <div class="header">
-      <h1>examples/example-todolist.md</h1>
+      <h1>examples/example-performance.md</h1>
     </div>
     <div class="example">
       <div class="example-dom" id="__exampleDom"></div>
@@ -759,7 +759,7 @@
       
         <script src="../common.js"></script>
       
-        <script src="example-todolist.js"></script>
+        <script src="example-performance.js"></script>
       
       </div>
     </div>
@@ -767,9 +767,7 @@
     
     <div id="desc" class="boxed-group">
       <div class="markdown-body">
-      <p>want a &quot;TodoMVC Benchmarking&quot; See <a href="example-performance.html">example-performance</a></p>
-<p>See also <a href="https://github.com/mweststrate/redux-todomvc">https://github.com/mweststrate/redux-todomvc</a> and <a href="https://github.com/mweststrate/mobx-todomvc">https://github.com/mweststrate/mobx-todomvc</a></p>
-<h2>code</h2>
+      <h2>code</h2>
 <div class="highlight"><pre><code language=html><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"react-content"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></div>
 <div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
@@ -780,10 +778,19 @@
 <span class="hljs-keyword">import</span> { createSelector } <span class="hljs-keyword">from</span> <span class="hljs-string">'reselect'</span>
 <span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'index.js'</span>;
 
+<span class="hljs-built_in">window</span>.perfStart = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  Perf.start();
+}
+
+<span class="hljs-built_in">window</span>.perfStop = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  Perf.stop();
+  Perf.printInclusive();
+  Perf.printWasted();
+}
 
 <span class="hljs-keyword">let</span> ID = <span class="hljs-number">0</span>;
 <span class="hljs-keyword">const</span> LIST = [];
-<span class="hljs-keyword">const</span> SIZE = <span class="hljs-number">5</span>;
+<span class="hljs-keyword">const</span> SIZE = <span class="hljs-number">10000</span>;
 <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>;i &lt; SIZE; i++) {
   LIST.push({
     text: <span class="hljs-string">'task '</span> + i,
