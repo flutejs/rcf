@@ -1,10 +1,3 @@
-want a "TodoMVC Benchmarking" See [example-performance](example-performance.html)
-
-See also https://github.com/mweststrate/redux-todomvc and https://github.com/mweststrate/mobx-todomvc
-
-
-
-
 ## code
 
 ```html
@@ -21,10 +14,19 @@ import classnames from 'classnames';
 import { createSelector } from 'reselect'
 import Rcf from 'index.js';
 
+window.perfStart = function() {
+  Perf.start();
+}
+
+window.perfStop = function() {
+  Perf.stop();
+  Perf.printInclusive();
+  Perf.printWasted();
+}
 
 let ID = 0;
 const LIST = [];
-const SIZE = 5;
+const SIZE = 10000;
 for(let i=0;i < SIZE; i++) {
   LIST.push({
     text: 'task ' + i,
