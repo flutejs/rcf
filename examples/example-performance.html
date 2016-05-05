@@ -738,7 +738,9 @@
 
   </style>
   <style type="text/css">
-  
+  .wrapper {
+  width: 100%;
+}
   </style>
 </head>
 <body>
@@ -778,6 +780,7 @@
 <span class="hljs-keyword">import</span> { createSelector } <span class="hljs-keyword">from</span> <span class="hljs-string">'reselect'</span>
 <span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'index.js'</span>;
 
+
 <span class="hljs-built_in">window</span>.perfStart = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
   Perf.start();
 }
@@ -787,6 +790,7 @@
   Perf.printInclusive();
   Perf.printWasted();
 }
+
 
 <span class="hljs-keyword">let</span> ID = <span class="hljs-number">0</span>;
 <span class="hljs-keyword">const</span> LIST = [];
@@ -845,7 +849,7 @@
       };
     },
     toggle(e) {
-      <span class="hljs-keyword">const</span> activeTodosCount = getActiveTodosCount(e.store.list);
+      <span class="hljs-keyword">const</span> activeTodosCount = getActiveTodosCount(e.store);
       <span class="hljs-keyword">if</span> (activeTodosCount === <span class="hljs-number">0</span> || e.store.list.length === activeTodosCount) {
         <span class="hljs-keyword">return</span> {
           list: e.store.list.map(todo =&gt; ({
@@ -865,8 +869,9 @@
 };
 
 <span class="hljs-keyword">const</span> getVisibleTodos = createSelector([
-  obj =&gt; obj,
-], ({list, filter}) =&gt; {
+  store =&gt; store.list,
+  store =&gt; store.filter,
+], (list, filter) =&gt; {
   <span class="hljs-keyword">switch</span> (filter) {
     <span class="hljs-keyword">case</span> <span class="hljs-string">'all'</span>:
       <span class="hljs-keyword">return</span> list;
@@ -878,7 +883,7 @@
 });
 
 <span class="hljs-keyword">const</span> getActiveTodosCount = createSelector([
-  obj =&gt; obj,
+  store =&gt; store.list,
 ], list =&gt; {
   <span class="hljs-keyword">return</span> list.filter(t =&gt; !t.completed).length;
 });
@@ -886,10 +891,7 @@
 
 <span class="hljs-keyword">const</span> TodoList = ({ todolist }) =&gt; {
   <span class="hljs-keyword">const</span> { change, del, add, filter, list, changeFilter, clearCompleted, toggle, edit } = todolist;
-  <span class="hljs-keyword">let</span> filterList = getVisibleTodos({
-    list,
-    filter,
-  });
+  <span class="hljs-keyword">const</span> filterList = getVisibleTodos(todolist);
   <span class="hljs-keyword">const</span> todoProps = { change, del, edit };
   <span class="hljs-keyword">const</span> footerProps = { list, filter, changeFilter, clearCompleted };
   <span class="hljs-keyword">const</span> toggleAllProps = { list, toggle };
@@ -941,6 +943,7 @@ class Todo extends Component {
     const { todo, change, del, edit } = this.props;
     return &lt;li className={classnames({
         completed: todo.completed,
+        editing: this.state.type === 'edit',
       })}&gt;
 
       {
@@ -1011,7 +1014,10 @@ class TodoInput extends Component {
   render() {
     return &lt;form onSubmit={this.handleSubmit}&gt;
       &lt;input type="text"
-        className="new-todo"
+        className={classnames({
+          'new-todo': this.props.type === 'new-todo',
+          'edit': this.props.type === 'edit-todo',
+        })}
         autoFocus="true"
         placeholder="What needs to be done?"
         value={this.state.text}
@@ -1026,7 +1032,7 @@ class TodoInput extends Component {
 class Footer extends Component {
   render() {
     const { list, filter, changeFilter, clearCompleted } = this.props;
-    const activeCount = getActiveTodosCount(list);
+    const activeCount = getActiveTodosCount({ list });
     const completedCount = list.length - activeCount;
     return &lt;footer className="footer"&gt;
       &lt;span className="todo-count"&gt;
@@ -1060,7 +1066,7 @@ class Footer extends Component {
 
 
 const ToggleAll = ({ list, toggle }) =&gt; {
-  const completedCount = list.length - getActiveTodosCount(list);
+  const completedCount = list.length - getActiveTodosCount({ list });
   return list.length &gt; 0 ? &lt;input
     className="toggle-all"
     type="checkbox"
@@ -1075,6 +1081,9 @@ ReactDOM.render(&lt;Rcf store={store}&gt;
   &lt;TodoList /&gt;
 &lt;/Rcf&gt;,
 document.getElementById('react-content'));</code></pre></div>
+<div class="highlight"><pre><code language=css><span class="hljs-selector-class">.wrapper</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+}</code></pre></div>
       </div>
     </div>
     
