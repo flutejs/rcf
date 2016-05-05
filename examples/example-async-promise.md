@@ -9,7 +9,6 @@
 ```js
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import isPromise from 'is-promise';
 import Rcf from 'index.js';
 
 class A extends Component {

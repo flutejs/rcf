@@ -4,7 +4,7 @@ const container = new WeakMap();
 
 const get = (store) => container.get(store);
 
-const set = (store, list) => container.set(store, list);
+const set = (store, obj) => container.set(store, obj);
 
 const del = (store) => container.delete(store);
 

@@ -14,7 +14,7 @@ import Rcf from 'index.js';
 
 class A extends Component {
   handleClick = () => {
-    this.props.store1.minus(2);
+    this.props.store1.minus2(2);
   }
   render() {
     return <div>
@@ -50,6 +50,9 @@ class B extends Component {
 const store = {
   store1: {
     a: 1,
+    minus2: (step, e) => {
+      return e.store.minus(step, e);
+    },
     minus: (step, e) => ({
       a: e.store.a - step
     })

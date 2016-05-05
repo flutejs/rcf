@@ -14,7 +14,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { set, remove } from 'immutable-data';
 import 'todomvc-app-css/index.css'
-import * as Perf from 'react-addons-perf';
 import classnames from 'classnames';
 import { createSelector } from 'reselect'
 import Rcf from 'index.js';

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes, Children, cloneElement, isValidElement } from 'react';
-import { createStore, delStore, transformStore } from './store';
+import { createStore, delStore } from './store';
 
 
 class Rcf extends Component {
@@ -16,7 +16,14 @@ class Rcf extends Component {
 
   constructor(props) {
     super(props);
-    createStore(props.store, this.update);
+    this.store = createStore(props.store, this.update, this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.store !== this.props.store) {
+      delStore(this.props.store, this.update);
+      this.store = createStore(nextProps.store, this.update, this);
+    }
   }
 
   componentWillUnmount() {
@@ -28,10 +35,9 @@ class Rcf extends Component {
   }
 
   render() {
-    const store = transformStore(this.props.store, this);
     const array = Children.map(this.props.children, child => (
       isValidElement(child) ? cloneElement(child, {
-        ...store,
+        ...this.store,
       }) : child));
     if (!array) {
       return null;
