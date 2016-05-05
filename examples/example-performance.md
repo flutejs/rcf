@@ -14,6 +14,7 @@ import classnames from 'classnames';
 import { createSelector } from 'reselect'
 import Rcf from 'index.js';
 
+
 window.perfStart = function() {
   Perf.start();
 }
@@ -23,6 +24,7 @@ window.perfStop = function() {
   Perf.printInclusive();
   Perf.printWasted();
 }
+
 
 let ID = 0;
 const LIST = [];
@@ -81,7 +83,7 @@ const store = {
       };
     },
     toggle(e) {
-      const activeTodosCount = getActiveTodosCount(e.store.list);
+      const activeTodosCount = getActiveTodosCount(e.store);
       if (activeTodosCount === 0 || e.store.list.length === activeTodosCount) {
         return {
           list: e.store.list.map(todo => ({
@@ -101,8 +103,9 @@ const store = {
 };
 
 const getVisibleTodos = createSelector([
-  obj => obj,
-], ({list, filter}) => {
+  store => store.list,
+  store => store.filter,
+], (list, filter) => {
   switch (filter) {
     case 'all':
       return list;
@@ -114,7 +117,7 @@ const getVisibleTodos = createSelector([
 });
 
 const getActiveTodosCount = createSelector([
-  obj => obj,
+  store => store.list,
 ], list => {
   return list.filter(t => !t.completed).length;
 });
@@ -122,10 +125,7 @@ const getActiveTodosCount = createSelector([
 
 const TodoList = ({ todolist }) => {
   const { change, del, add, filter, list, changeFilter, clearCompleted, toggle, edit } = todolist;
-  let filterList = getVisibleTodos({
-    list,
-    filter,
-  });
+  const filterList = getVisibleTodos(todolist);
   const todoProps = { change, del, edit };
   const footerProps = { list, filter, changeFilter, clearCompleted };
   const toggleAllProps = { list, toggle };
@@ -177,6 +177,7 @@ class Todo extends Component {
     const { todo, change, del, edit } = this.props;
     return <li className={classnames({
         completed: todo.completed,
+        editing: this.state.type === 'edit',
       })}>
 
       {
@@ -247,7 +248,10 @@ class TodoInput extends Component {
   render() {
     return <form onSubmit={this.handleSubmit}>
       <input type="text"
-        className="new-todo"
+        className={classnames({
+          'new-todo': this.props.type === 'new-todo',
+          'edit': this.props.type === 'edit-todo',
+        })}
         autoFocus="true"
         placeholder="What needs to be done?"
         value={this.state.text}
@@ -262,7 +266,7 @@ class TodoInput extends Component {
 class Footer extends Component {
   render() {
     const { list, filter, changeFilter, clearCompleted } = this.props;
-    const activeCount = getActiveTodosCount(list);
+    const activeCount = getActiveTodosCount({ list });
     const completedCount = list.length - activeCount;
     return <footer className="footer">
       <span className="todo-count">
@@ -296,7 +300,7 @@ class Footer extends Component {
 
 
 const ToggleAll = ({ list, toggle }) => {
-  const completedCount = list.length - getActiveTodosCount(list);
+  const completedCount = list.length - getActiveTodosCount({ list });
   return list.length > 0 ? <input
     className="toggle-all"
     type="checkbox"
@@ -311,4 +315,10 @@ ReactDOM.render(<Rcf store={store}>
   <TodoList />
 </Rcf>,
 document.getElementById('react-content'));
+```
+
+```css
+.wrapper {
+  width: 100%;
+}
 ```
