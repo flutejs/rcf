@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <title>
-    rcf@0.5.0
+    rcf@0.5.1
   </title>
   <link href="//os.alipayobjects.com/rmsportal/iUKcdtKUFtONTig.css" rel="stylesheet"/>
   <style type="text/css">
@@ -714,7 +714,7 @@
 <body>
   <div>
     <div class="header">
-      <h1>rcf@0.5.0</h1>
+      <h1>rcf@0.5.1</h1>
     </div>
     <div class="examples">
       <h3>EXAMPLES</h3>
@@ -730,6 +730,12 @@
           <li>
             <a href="./examples/example-async-setStore.html">
               examples/example-async-setStore
+            </a>
+          </li>
+        
+          <li>
+            <a href="./examples/example-index.html">
+              examples/example-index
             </a>
           </li>
         
@@ -778,7 +784,66 @@
       <h1 id="rcf">Rcf</h1>
 <p><a href="https://npmjs.org/package/rcf"><img src="https://img.shields.io/npm/v/rcf.svg?style=flat" alt="NPM version"></a></p>
 <p>Rcf is a react component, it uses a clear and simple way to manage store.</p>
-<p>Put your component in Rcf and Rcf allows it to get store by &quot;this.props.storeName.*&quot;</p>
+<p>Put your component in Rcf and Rcf allows it to get store by &quot;this.props.storeName.*&quot;.The components in Rcf can share the same store and when the store changes, they will be re rendered.</p>
+<h2 id="let-s-start-it-">Let&#39;s start it !</h2>
+<p>UserStore.js</p>
+<div class="highlight"><pre><code language=javascript><span class="hljs-keyword">const</span> UserStore = {
+  name: <span class="hljs-string">'lily'</span>,
+  age: <span class="hljs-string">'18'</span>,
+};
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> UserStore;</code></pre></div><p>User.js</p>
+<div class="highlight"><pre><code language=javascript><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    name: {this.props.user.name}
+    age: {this.props.user.age}
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> User;</code></pre></div><p>Age.js</p>
+<div class="highlight"><pre><code language=javascript><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Age</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    age: {this.props.user.age}
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> this.props.user.setStore({age: this.props.user.age - 1})}&gt;click<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Age;</code></pre></div><p>App.js</p>
+<div class="highlight"><pre><code language=javascript><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>
+<span class="hljs-keyword">import</span> userStore <span class="hljs-keyword">from</span> <span class="hljs-string">'./userStore'</span>;
+<span class="hljs-keyword">import</span> User <span class="hljs-keyword">from</span> <span class="hljs-string">'./User'</span>;
+<span class="hljs-keyword">import</span> Age <span class="hljs-keyword">from</span> <span class="hljs-string">'./Age'</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  render() {
+  <span class="hljs-keyword">const</span> store = {
+    user: userStore,
+  };
+  <span class="hljs-keyword">return</span> &lt;div&gt;
+    &lt;Rcf store={store}&gt;
+      Put User in Rcf.
+      &lt;User /&gt;
+    &lt;/Rcf&gt;
+
+    &lt;Rcf store={store}&gt;
+      Put Age in Rcf.
+      &lt;Age /&gt;
+    &lt;/Rcf&gt;
+
+    &lt;Rcf store={store}&gt;
+      You can put then in Rcf too.
+      &lt;User /&gt;
+      &lt;Age /&gt;
+    &lt;/Rcf&gt;
+    &lt;/div&gt;
+  }
+}
+
+ReactDOM.render(&lt;App /&gt;, mountDom);</code></pre></div><p>You can see this example here: <a href="http://flutejs.github.io/rcf/examples/example-index.html">http://flutejs.github.io/rcf/examples/example-index.html</a></p>
 <h2 id="store">store</h2>
 <p>The store is a plain object which can only be modified by function in store. If the type of the value is a function, it  will return a plain object or a promise,</p>
 <div class="highlight"><pre><code language=js><span class="hljs-keyword">const</span> store = {
@@ -818,8 +883,6 @@
 </li>
 <li><p>setStore: Function</p>
 </li>
-<li><p>target: React element</p>
-</li>
 </ul>
 <p>There&#39;s a default function &#39;setStore&#39; in store object. If you define a store:</p>
 <div class="highlight"><pre><code language=js><span class="hljs-keyword">const</span> store = {
@@ -831,73 +894,10 @@
   },
 };</code></pre></div><p>So you can use &quot;this.props.store1.setStore&quot; in simple app.</p>
 <p><a href="http://flutejs.github.io/rcf/examples/example-simple.html">http://flutejs.github.io/rcf/examples/example-simple.html</a></p>
-<h2 id="install">Install</h2>
-<div class="highlight"><pre><code language=cmake>npm <span class="hljs-keyword">install</span> rcf</code></pre></div><h2 id="example">Example</h2>
+<h2 id="example">Example</h2>
 <p><a href="http://flutejs.github.io/rcf/">http://flutejs.github.io/rcf/</a></p>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'rcf'</span>;
-
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
-  handleClick = () =&gt; {
-    <span class="hljs-keyword">this</span>.props.store1.minus(<span class="hljs-number">2</span>);
-  }
-  render() {
-    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-
-      A:
-
-      {this.props.store1.a}
-
-      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{this.handleClick}</span>&gt;</span>
-        click
-      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
-  }
-
-}
-
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
-  render() {
-    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-
-      B:
-
-      {this.props.store1.a} 
-
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
-  }
-
-}
-
-
-<span class="hljs-keyword">const</span> store = {
-  store1: {
-    a: <span class="hljs-number">1</span>,
-    minus: (step, e) =&gt; ({
-      a: e.store.a - step
-    })
-  },
-};
-
-ReactDOM.render(&lt;div&gt;
-
-  &lt;Rcf store={store}&gt;
-    &lt;A /&gt;
-    &lt;B /&gt;
-  &lt;/Rcf&gt;
-
-  &lt;Rcf store={store}&gt;
-    &lt;B /&gt;
-  &lt;/Rcf&gt;
-
-&lt;/div&gt;, 
-
-mountDom);</code></pre></div><p><a href="http://flutejs.github.io/rcf/examples/example-sync.html">http://flutejs.github.io/rcf/examples/example-sync.html</a></p>
-<h2 id="api">API</h2>
+<h2 id="install">Install</h2>
+<div class="highlight"><pre><code language=cmake>npm <span class="hljs-keyword">install</span> rcf</code></pre></div><h2 id="api">API</h2>
 <h3 id="props">props</h3>
 <table class="table table-bordered table-striped">
     <thead>

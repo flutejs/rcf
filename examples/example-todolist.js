@@ -9,11 +9,11 @@ webpackJsonp([2],{
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _react = __webpack_require__(13);
+	var _react = __webpack_require__(11);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(17);
+	var _reactDom = __webpack_require__(13);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
@@ -27,7 +27,7 @@ webpackJsonp([2],{
 	
 	var _reselect = __webpack_require__(75);
 	
-	var _index = __webpack_require__(14);
+	var _index = __webpack_require__(12);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
