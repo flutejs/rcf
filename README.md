@@ -70,7 +70,7 @@ class App extends Component {
     </Rcf>
     
     <Rcf store={store}>
-      You can put then in Rcf too.
+      You can put them in Rcf too.
       <User />
       <Age />
     </Rcf>
