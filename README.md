@@ -4,12 +4,90 @@
 
 Rcf is a react component, it uses a clear and simple way to manage store.
 
-Put your component in Rcf and Rcf allows it to get store by "this.props.storeName.*"
+Put your component in Rcf and Rcf allows it to get store by "this.props.storeName.*".The components in Rcf can share the same store and when the store changes, they will be re rendered.
+
+## Let's start it !
+
+UserStore.js
+```javascript
+const UserStore = {
+  name: 'lily',
+  age: '18',
+};
+export default UserStore;
+```
+
+User.js
+```javascript
+import React, { Component } from 'react';
+class User extends Component {
+  render() {
+    return <div>
+    name: {this.props.user.name}
+    age: {this.props.user.age}
+  </div>;
+  }
+}
+export default User;
+```
+
+Age.js
+```javascript
+import React, { Component } from 'react';
+class Age extends Component {
+  render() {
+    return <div>
+    age: {this.props.user.age}
+    <button onClick={() => this.props.user.setStore({age: this.props.user.age - 1})}>click</button>
+  </div>;
+  }
+}
+export default Age;
+```
+
+App.js
+```javascript
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+import userStore from './userStore';
+import User from './User';
+import Age from './Age';
+
+class App extends Component {
+  render() {
+  const store = {
+    user: userStore,
+  };
+  return <div>
+    <Rcf store={store}>
+      Put User in Rcf.
+      <User />
+    </Rcf>
+
+    <Rcf store={store}>
+      Put Age in Rcf.
+      <Age />
+    </Rcf>
+    
+    <Rcf store={store}>
+      You can put then in Rcf too.
+      <User />
+      <Age />
+    </Rcf>
+    </div>
+  }
+}
+
+ReactDOM.render(<App />, mountDom);
+```
+
+You can see this example here: http://flutejs.github.io/rcf/examples/example-index.html
 
 
 ## store
 
 The store is a plain object which can only be modified by function in store. If the type of the value is a function, it  will return a plain object or a promise,
+
 
 ```js
 const store = {
@@ -57,8 +135,6 @@ As you see, the last argument is an Event, which has properties:
 
 - setStore: Function
 
-- target: React element
-
 
 There's a default function 'setStore' in store object. If you define a store:
 
@@ -82,87 +158,15 @@ So you can use "this.props.store1.setStore" in simple app.
 
 http://flutejs.github.io/rcf/examples/example-simple.html
 
-## Install
-
-
-```
-npm install rcf
-```
-
-
 ## Example
 
 http://flutejs.github.io/rcf/
 
-```js
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import Rcf from 'rcf';
-
-
-class A extends Component {
-  handleClick = () => {
-    this.props.store1.minus(2);
-  }
-  render() {
-    return <div>
-
-      A:
-
-      {this.props.store1.a}
-
-      <button onClick={this.handleClick}>
-        click
-      </button>
-
-    </div>;
-  }
-
-}
-
-
-class B extends Component {
-  render() {
-    return <div>
-  
-      B:
-      
-      {this.props.store1.a} 
-
-    </div>;
-  }
-
-}
-
-
-const store = {
-  store1: {
-    a: 1,
-    minus: (step, e) => ({
-      a: e.store.a - step
-    })
-  },
-};
-
-ReactDOM.render(<div>
-  
-  <Rcf store={store}>
-    <A />
-    <B />
-  </Rcf>
-  
-  <Rcf store={store}>
-    <B />
-  </Rcf>
-
-</div>, 
-
-mountDom);
+## Install
 
 ```
-
-http://flutejs.github.io/rcf/examples/example-sync.html
-
+npm install rcf
+```
 
 ## API
 

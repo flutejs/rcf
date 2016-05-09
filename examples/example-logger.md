@@ -58,7 +58,6 @@ const logger = store => {
           const setStore = e.setStore;   
           if (!e.setStore.logger) {
             e.setStore = obj => {
-              console.log(e.target);
               console.log(name + ' ' + key);
               console.log(e.store);
               setStore(obj);

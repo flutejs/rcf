@@ -16,13 +16,13 @@ class Rcf extends Component {
 
   constructor(props) {
     super(props);
-    this.store = createStore(props.store, this.update, this);
+    this.store = createStore(props.store, this.update);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.store !== this.props.store) {
       delStore(this.props.store, this.update);
-      this.store = createStore(nextProps.store, this.update, this);
+      this.store = createStore(nextProps.store, this.update);
     }
   }
 

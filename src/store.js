@@ -12,10 +12,9 @@ const setStore = (store, obj) => {
   }
 };
 
-const transformStore = (store, target) => {
+const transformStore = store => {
   const map = {};
   const event = {
-    target,
     store: map,
     setStore: obj => setStore(store, obj),
   };
@@ -37,7 +36,7 @@ const transformStore = (store, target) => {
   return map;
 };
 
-const createStore = (store, update, target) => {
+const createStore = (store, update) => {
   const map = {};
   for (const name in store) {
     const obj = store[name];
@@ -46,11 +45,13 @@ const createStore = (store, update, target) => {
     }
     let cache = get(obj);
     if (cache) {
-      cache.list.push(update);
+      if (update) {
+        cache.list.push(update);
+      }
     } else {
       cache = {
-        list: [update],
-        store: transformStore(obj, target),
+        list: update ? [update] : [],
+        store: transformStore(obj),
       };
       set(obj, cache);
     }
