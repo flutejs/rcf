@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <title>
-    rcf@0.5.1
-  </title>
+  <meta charset="UTF-8">
+  <title>examples/example-mutipleinit.md</title>
   <link href="//os.alipayobjects.com/rmsportal/iUKcdtKUFtONTig.css" rel="stylesheet"/>
   <style type="text/css">
   @font-face {
@@ -601,6 +598,34 @@
     margin: 0;
   }
 
+  .highlight pre {
+    padding: .8em 1em;
+    font: 14px/20px Consolas, Monaco, 'Andale Mono', monospace;
+    border: 1px solid #e5e8ec;
+    border-radius: 3px;
+    background-size: 40px 40px;
+    background-origin: content-box;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .highlight pre > code {
+    font-family: inherit;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    vertical-align: 2px;
+    display: block;
+    -moz-tab-size: 2;
+    -o-tab-size: 2;
+    tab-size: 2;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
   /*
 
   github.com style (c) Vasily Polovnyov <vast@whiteants.net>
@@ -700,237 +725,117 @@
   .hljs-strong {
     font-weight: bold;
   }
-
-  .header {
-    min-width: 200px;
-    max-width: 790px;
-    margin:0 auto;
+  .wrapper {
+    width: 86%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  
+  .example {
+    padding: 20px 0;
+  }
+
+  </style>
+  <style type="text/css">
+  .rcf{
+  margin: 20px;
+  border: 1px solid gray;
+}
   </style>
 </head>
-
 <body>
-  <div>
+  <div class="wrapper">
     <div class="header">
-      <h1>rcf@0.5.1</h1>
+      <h1>examples/example-mutipleinit.md</h1>
     </div>
-    <div class="examples">
-      <h3>EXAMPLES</h3>
-      <div class="examples-body">
-        <ul>
-        
-          <li>
-            <a href="./examples/example-async-promise.html">
-              examples/example-async-promise
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-async-setStore.html">
-              examples/example-async-setStore
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-index.html">
-              examples/example-index
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-logger.html">
-              examples/example-logger
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-multiple.html">
-              examples/example-multiple
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-mutipleinit.html">
-              examples/example-mutipleinit
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-performance.html">
-              examples/example-performance
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-simple.html">
-              examples/example-simple
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-sync.html">
-              examples/example-sync
-            </a>
-          </li>
-        
-          <li>
-            <a href="./examples/example-todolist.html">
-              examples/example-todolist
-            </a>
-          </li>
-        
-      </ul>
+    <div class="example">
+      <div class="example-dom" id="__exampleDom"></div>
+
+      
+      <div class="example-html">
+        <div id="react-content"></div>
+      </div>
+      
+
+      <div class="example-scripts">
+      
+        <script src="../common.js"></script>
+      
+        <script src="example-mutipleinit.js"></script>
+      
       </div>
     </div>
-    <div id="readme" class="boxed-group">
-      <h3>README.md</h3>
+
+    
+    <div id="desc" class="boxed-group">
       <div class="markdown-body">
-      <h1 id="rcf">Rcf</h1>
-<p><a href="https://npmjs.org/package/rcf"><img src="https://img.shields.io/npm/v/rcf.svg?style=flat" alt="NPM version"></a></p>
-<p>Rcf is a react component, it uses a clear and simple way to manage store.</p>
-<p>Put your component in Rcf and Rcf allows it to get store by &quot;this.props.storeName.*&quot;.The components in Rcf can share the same store and when the store changes, they will be re rendered.</p>
-<h2 id="let-s-start-it-">Let&#39;s start it !</h2>
-<p>UserStore.js</p>
-<div class="highlight"><pre><code language=javascript><span class="hljs-keyword">const</span> UserStore = {
-  name: <span class="hljs-string">'lily'</span>,
-  age: <span class="hljs-string">'18'</span>,
-};
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> UserStore;</code></pre></div><p>User.js</p>
-<div class="highlight"><pre><code language=javascript><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+      <h2>code</h2>
+<div class="highlight"><pre><code language=html><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"react-content"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></div>
+<div class="highlight"><pre><code language=js><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> Rcf <span class="hljs-keyword">from</span> <span class="hljs-string">'index.js'</span>;
+
+
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
   render() {
-    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-    name: {this.props.user.name}
-    age: {this.props.user.age}
-  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>name: {this.props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>age: {this.props.age}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
   }
 }
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> User;</code></pre></div><p>Age.js</p>
-<div class="highlight"><pre><code language=javascript><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Age</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
   render() {
-    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-    age: {this.props.user.age}
-    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> this.props.user.setStore({age: this.props.user.age - 1})}&gt;click<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+    <span class="hljs-keyword">return</span> &lt;li&gt;
+        &lt;User {...this.props.user} /&gt;
+    &lt;/li&gt;;
   }
 }
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Age;</code></pre></div><p>App.js</p>
-<div class="highlight"><pre><code language=javascript><span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>
-<span class="hljs-keyword">import</span> userStore <span class="hljs-keyword">from</span> <span class="hljs-string">'./userStore'</span>;
-<span class="hljs-keyword">import</span> User <span class="hljs-keyword">from</span> <span class="hljs-string">'./User'</span>;
-<span class="hljs-keyword">import</span> Age <span class="hljs-keyword">from</span> <span class="hljs-string">'./Age'</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.list = props.list || [{
+      name: 'lily',
+      age: 18,
+    }, {
+      name: 'jack',
+      age: 17,
+    }];
+  }
   render() {
-  <span class="hljs-keyword">const</span> store = {
-    user: userStore,
-  };
-  <span class="hljs-keyword">return</span> &lt;div&gt;
-    &lt;Rcf store={store}&gt;
-      Put User in Rcf.
-      &lt;User /&gt;
-    &lt;/Rcf&gt;
 
-    &lt;Rcf store={store}&gt;
-      Put Age in Rcf.
-      &lt;Age /&gt;
-    &lt;/Rcf&gt;
 
-    &lt;Rcf store={store}&gt;
-      You can put them in Rcf too.
-      &lt;User /&gt;
-      &lt;Age /&gt;
-    &lt;/Rcf&gt;
-    &lt;/div&gt;
+    return &lt;ul&gt;
+      {
+        this.list.map((item, index) =&gt; 
+          &lt;Rcf store={{ user: item }} key={index}&gt;
+            &lt;MyComponent /&gt;
+          &lt;/Rcf&gt;
+        )
+      }
+    &lt;/ul&gt;;
+
   }
 }
 
-ReactDOM.render(&lt;App /&gt;, mountDom);</code></pre></div><p>You can see this example here: <a href="http://flutejs.github.io/rcf/examples/example-index.html">http://flutejs.github.io/rcf/examples/example-index.html</a></p>
-<h2 id="store">store</h2>
-<p>The store is a plain object which can only be modified by function in store. If the type of the value is a function, it  will return a plain object or a promise,</p>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">const</span> store = {
-  store1: {
-    a: <span class="hljs-number">1</span>,
-    b: <span class="hljs-number">1</span>,
-      minus: (step, e) =&gt; ({
-        a: e.store.a - step
-      }),
-  },
-  store2: {
-    a: <span class="hljs-number">2</span>,
-    minus: (step, e) =&gt; <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(resolve =&gt; {
-        setTimeout(() =&gt; resolve({
-           a: e.store.a - step,
-        }), <span class="hljs-number">1000</span>);
-    }),
-  }
-};</code></pre></div><p>or you can use e.setStore to handel async callback,</p>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">const</span> store = {
-  store1: {
-    a: <span class="hljs-number">1</span>,
-      minus: (step, e) =&gt; {
-      setTimeout(() =&gt; {
-        e.setStore({
-          a: e.store.a - step,  
-        });
-      }, <span class="hljs-number">1000</span>);
-      },
-  },
-  store2: {
-    a: <span class="hljs-number">2</span>,
-  }
-};</code></pre></div><p>As you see, the last argument is an Event, which has properties:</p>
-<ul>
-<li><p>store: Plain object</p>
-</li>
-<li><p>setStore: Function</p>
-</li>
-</ul>
-<p>There&#39;s a default function &#39;setStore&#39; in store object. If you define a store:</p>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">const</span> store = {
-  store1: {},
-};</code></pre></div><p>Rcf will transform it to</p>
-<div class="highlight"><pre><code language=js><span class="hljs-keyword">const</span> store = {
-  store1: {
-    setStore: obj =&gt; obj,
-  },
-};</code></pre></div><p>So you can use &quot;this.props.store1.setStore&quot; in simple app.</p>
-<p><a href="http://flutejs.github.io/rcf/examples/example-simple.html">http://flutejs.github.io/rcf/examples/example-simple.html</a></p>
-<h2 id="example">Example</h2>
-<p><a href="http://flutejs.github.io/rcf/">http://flutejs.github.io/rcf/</a></p>
-<h2 id="install">Install</h2>
-<div class="highlight"><pre><code language=cmake>npm <span class="hljs-keyword">install</span> rcf</code></pre></div><h2 id="api">API</h2>
-<h3 id="props">props</h3>
-<table class="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th style="width: 100px;">name</th>
-      <th style="width: 50px;">type</th>
-      <th>description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>store</td>
-      <td>object</td>
-      <td>plain object</td>
-    </tr>
-    <tr>
-      <td>tag</td>
-      <td>string | object</td>
-      <td>default is &#39;div&#39;, the root element When the number of children is greater than 1, set root element to tag</td>
-    </tr>
-  </tbody>
-</table>
 
+ReactDOM.render(&lt;App /&gt;, 
+
+document.getElementById('react-content'));</code></pre></div>
+<div class="highlight"><pre><code language=css><span class="hljs-selector-class">.rcf</span>{
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">20px</span>;
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid gray;
+}</code></pre></div>
       </div>
     </div>
-    <a href="http://github.com/flutejs/rcf"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+    
+
+    
   </div>
 </body>
-
 </html>
