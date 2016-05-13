@@ -173,25 +173,23 @@ npm install rcf
 ### props
 
 <table class="table table-bordered table-striped">
-    <thead>
+  <thead>
     <tr>
-        <th style="width: 100px;">name</th>
-        <th style="width: 50px;">type</th>
-        <th>description</th>
+      <th style="width: 100px;">name</th>
+      <th style="width: 50px;">type</th>
+      <th>description</th>
     </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>store</td>
-          <td>object</td>
-          <td>plain object</td>
-        </tr>
-        <tr>
-          <td>tag</td>
-            <td>string | object</td>
-          <td>default is 'div', the root element
-When the number of children is greater than 1, set root element to tag</td>
-        </tr>
- 
-    </tbody>
+  </thead>
+  <tbody>
+    <tr>
+      <td>store</td>
+      <td>object</td>
+      <td>plain object</td>
+    </tr>
+    <tr>
+      <td>tag</td>
+      <td>string | object</td>
+      <td>default is 'div', the root element When the number of children is greater than 1, set root element to tag</td>
+    </tr>
+  </tbody>
 </table>
